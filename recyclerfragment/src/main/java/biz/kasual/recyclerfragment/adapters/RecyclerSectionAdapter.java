@@ -17,6 +17,9 @@ import java.util.List;
 import biz.kasual.recyclerfragment.R;
 import biz.kasual.recyclerfragment.views.ViewHolder;
 
+/**
+ * Created by Stephen Vinouze on 09/11/2015.
+ */
 public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
     private static final int SECTION_TYPE = 0;

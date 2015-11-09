@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">RecyclerFragment</string>
+
+    <string name="simple_recycler_name">Simple Recycler Fragment</string>
+    <string name="section_recycler_name">Section Recycler Fragment</string>
 </resources>

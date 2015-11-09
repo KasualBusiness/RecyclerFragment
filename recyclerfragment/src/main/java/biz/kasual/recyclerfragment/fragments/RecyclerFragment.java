@@ -20,8 +20,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-/*
- * Created by stephenvinouze on 09/07/2015.
+/**
+ * Created by Stephen Vinouze on 09/11/2015.
  */
 public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 

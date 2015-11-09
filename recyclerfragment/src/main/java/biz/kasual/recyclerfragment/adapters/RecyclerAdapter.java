@@ -1,5 +1,6 @@
 package biz.kasual.recyclerfragment.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.View;
@@ -11,22 +12,26 @@ import java.util.List;
 
 import biz.kasual.recyclerfragment.views.ViewHolder;
 
-/*
- * Created by stephenvinouze on 08/07/2015.
+/**
+ * Created by Stephen Vinouze on 09/11/2015.
  */
 public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
-
-    protected List<T> mItems = new ArrayList<>();
-    private ChoiceMode mChoiceMode = ChoiceMode.SINGLE_CHOICE;
-    private SparseBooleanArray selectedItemViews = new SparseBooleanArray();
-
-    private OnRecyclerItemListener<T> mListener;
-
-    public enum ChoiceMode { SINGLE_CHOICE, MULTIPLE_CHOICE }
 
     public interface OnRecyclerItemListener<T> {
         void onItemClick(T t);
         boolean onItemLongClick(T t);
+    }
+
+    public enum ChoiceMode { SINGLE_CHOICE, MULTIPLE_CHOICE }
+
+    protected Context mContext;
+    protected List<T> mItems = new ArrayList<>();
+    private ChoiceMode mChoiceMode = ChoiceMode.SINGLE_CHOICE;
+    private SparseBooleanArray selectedItemViews = new SparseBooleanArray();
+    private OnRecyclerItemListener<T> mListener;
+
+    public RecyclerAdapter(Context context) {
+        mContext = context;
     }
 
     public void setOnRecyclerItemListener(OnRecyclerItemListener<T> listener) {

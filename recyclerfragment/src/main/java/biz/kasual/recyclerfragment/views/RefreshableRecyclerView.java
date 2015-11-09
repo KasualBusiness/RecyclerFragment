@@ -20,16 +20,16 @@ public class RefreshableRecyclerView extends FrameLayout {
 
     public RefreshableRecyclerView(Context context) {
         super(context);
-        initViews();
+        initViews(context);
     }
 
     public RefreshableRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initViews();
+        initViews(context);
     }
 
-    private void initViews() {
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    private void initViews(Context context) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.refreshable_recycler_view, this);
         mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.kb_refresh_layout);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.kb_recycler_view);

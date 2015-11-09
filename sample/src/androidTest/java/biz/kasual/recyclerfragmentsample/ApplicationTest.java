@@ -1,4 +1,4 @@
-package biz.kasual.recyclerfragment;
+package biz.kasual.recyclerfragmentsample;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
