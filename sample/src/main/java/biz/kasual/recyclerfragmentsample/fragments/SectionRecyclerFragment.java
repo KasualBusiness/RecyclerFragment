@@ -55,6 +55,6 @@ public class SectionRecyclerFragment extends RecyclerFragment<Sample> {
 
     @Override
     public String sortSectionMethod() {
-        return "getSectionTitle";
+        return "getRate";
     }
 }

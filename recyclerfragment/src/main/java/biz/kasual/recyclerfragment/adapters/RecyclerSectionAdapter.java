@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -169,8 +170,21 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
     private void buildSections(List<T> items) {
         if (items.size() > 0) {
             try {
-                Method method = items.get(0).getClass().getDeclaredMethod(mSortMethodName);
+                final Method method = items.get(0).getClass().getDeclaredMethod(mSortMethodName);
                 if (method != null) {
+
+                    Collections.sort(items, new Comparator<T>() {
+                        @Override
+                        public int compare(T lhs, T rhs) {
+                            try {
+                                return method.invoke(lhs).toString().compareTo(method.invoke(rhs).toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            return 0;
+                        }
+                    });
+
                     List<Section> sections = new ArrayList<>();
                     String previousTitle = "";
                     for (T item : items) {
