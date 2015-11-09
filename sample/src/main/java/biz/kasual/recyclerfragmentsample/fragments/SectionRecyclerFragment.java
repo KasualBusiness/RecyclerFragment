@@ -6,46 +6,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import biz.kasual.recyclerfragment.fragments.RecyclerFragment;
-import biz.kasual.recyclerfragment.views.RefreshableRecyclerView;
-import biz.kasual.recyclerfragmentsample.R;
-import biz.kasual.recyclerfragmentsample.adapters.SimpleSampleAdapter;
+import biz.kasual.recyclerfragmentsample.adapters.SampleAdapter;
 import biz.kasual.recyclerfragmentsample.models.Sample;
 import retrofit.Callback;
 
 /**
  * Created by Stephen Vinouze on 06/11/2015.
  */
-public class SectionRecyclerFragment extends RecyclerFragment<Sample> {
-
-    private RefreshableRecyclerView mRecyclerView;
-    private SimpleSampleAdapter mSimpleSampleAdapter;
+public class SectionRecyclerFragment extends AbstractRecyclerFragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View contentView = inflater.inflate(R.layout.single_choice_recycler_layout, container, false);
+        View contentView = super.onCreateView(inflater, container, savedInstanceState);
 
-        mRecyclerView = (RefreshableRecyclerView)contentView.findViewById(R.id.single_choice_recycler_view);
-        mSimpleSampleAdapter = new SimpleSampleAdapter(getActivity());
-
-        configureFragment(mRecyclerView, mSimpleSampleAdapter);
-
-        List<Sample> samples = new ArrayList<>();
-        Sample sample;
-        for (int i = 0; i < 20; i++) {
-            sample = new Sample();
-            sample.setId(i);
-            sample.setRate(i % 2 == 0 ? 1 : 2);
-            sample.setName("Section Sample N°" + (i + 1));
-            samples.add(sample);
-        }
+        List<Sample> samples = SampleAdapter.buildSamples();
 
         Collections.sort(samples, new Comparator<Sample>() {
             @Override

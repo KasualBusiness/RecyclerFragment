@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import biz.kasual.recyclerfragmentsample.fragments.SectionRecyclerFragment;
-import biz.kasual.recyclerfragmentsample.fragments.SimpleRecyclerFragment;
+import biz.kasual.recyclerfragmentsample.fragments.DefaultRecyclerFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void displaySimpleRecyclerFragment() {
         setTitle(getString(R.string.simple_recycler_name));
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new SimpleRecyclerFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new DefaultRecyclerFragment()).commit();
     }
 
     private void displaySectionRecyclerFragment() {
