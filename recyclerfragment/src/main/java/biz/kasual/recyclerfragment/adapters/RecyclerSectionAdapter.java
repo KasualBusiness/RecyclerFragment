@@ -24,11 +24,11 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
 
     private static final int SECTION_TYPE = 0;
 
+    protected Context mContext;
     private boolean mValid = true;
-    private Context mContext;
     private String mSortMethodName;
     private RecyclerAdapter<T> mBaseAdapter;
-    protected SparseArray<Section> mSections = new SparseArray<>();
+    private SparseArray<Section> mSections = new SparseArray<>();
 
     public RecyclerSectionAdapter(Context context) {
         mContext = context;
