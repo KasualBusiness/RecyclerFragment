@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +46,18 @@ public class SectionRecyclerFragment extends RecyclerFragment<Sample> {
             sample.setName("Section Sample N°" + (i + 1));
             samples.add(sample);
         }
+
+        Collections.sort(samples, new Comparator<Sample>() {
+            @Override
+            public int compare(Sample lhs, Sample rhs) {
+                try {
+                    return lhs.getRate() - rhs.getRate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            }
+        });
 
         displayItems(samples);
 
