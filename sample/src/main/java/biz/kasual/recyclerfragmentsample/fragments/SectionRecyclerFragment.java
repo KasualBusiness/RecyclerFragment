@@ -25,6 +25,8 @@ public class SectionRecyclerFragment extends AbstractRecyclerFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View contentView = super.onCreateView(inflater, container, savedInstanceState);
 
+        configureFragment(mRecyclerView, mSampleAdapter);
+
         List<Sample> samples = SampleAdapter.buildSamples();
 
         Collections.sort(samples, new Comparator<Sample>() {
