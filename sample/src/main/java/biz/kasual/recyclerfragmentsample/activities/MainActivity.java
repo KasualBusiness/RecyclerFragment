@@ -9,6 +9,7 @@ import biz.kasual.recyclerfragmentsample.R;
 import biz.kasual.recyclerfragmentsample.fragments.CustomSectionRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.GestureRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.MultipleChoiceRecyclerFragment;
+import biz.kasual.recyclerfragmentsample.fragments.PaginationRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.SectionRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.SingleChoiceRecyclerFragment;
 
@@ -49,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.gesture_action:
                 displayGestureRecyclerFragment();
                 break;
+
+            case R.id.pagination_action:
+                displayPaginationRecyclerFragment();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -77,6 +82,11 @@ public class MainActivity extends AppCompatActivity {
     private void displayGestureRecyclerFragment() {
         setTitle(getString(R.string.gesture_recycler_name));
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new GestureRecyclerFragment()).commit();
+    }
+
+    private void displayPaginationRecyclerFragment() {
+        setTitle(getString(R.string.pagination_recycler_name));
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new PaginationRecyclerFragment()).commit();
     }
 
 }

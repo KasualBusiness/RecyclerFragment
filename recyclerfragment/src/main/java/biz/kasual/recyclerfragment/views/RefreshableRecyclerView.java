@@ -33,6 +33,7 @@ public class RefreshableRecyclerView extends FrameLayout {
         View view = inflater.inflate(R.layout.refreshable_recycler_view, this);
         mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.kb_refresh_layout);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.kb_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
     }
 
     public RecyclerView getRecyclerView() {

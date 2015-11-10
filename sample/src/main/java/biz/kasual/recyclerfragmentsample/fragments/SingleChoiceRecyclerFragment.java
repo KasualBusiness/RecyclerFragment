@@ -7,11 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
-import java.util.Map;
 
 import biz.kasual.recyclerfragmentsample.adapters.SampleAdapter;
 import biz.kasual.recyclerfragmentsample.models.Sample;
-import retrofit.Callback;
 
 /**
  * Created by Stephen Vinouze on 06/11/2015.
@@ -31,9 +29,6 @@ public class SingleChoiceRecyclerFragment extends AbstractRecyclerFragment {
 
         return contentView;
     }
-
-    @Override
-    public void buildRequest(Map<String, Object> params, Callback<List<Sample>> callback) {}
 
     @Override
     public String sortSectionMethod() {

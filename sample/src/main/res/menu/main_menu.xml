@@ -25,4 +25,9 @@
           android:orderInCategory="100"
           android:title="@string/gesture_recycler_name"
           app:showAsAction="never"/>
+
+    <item android:id="@+id/pagination_action"
+          android:orderInCategory="100"
+          android:title="@string/pagination_recycler_name"
+          app:showAsAction="never"/>
 </menu>

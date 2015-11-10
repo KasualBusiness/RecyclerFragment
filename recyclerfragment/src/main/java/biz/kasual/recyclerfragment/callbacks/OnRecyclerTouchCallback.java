@@ -15,4 +15,5 @@ public abstract class OnRecyclerTouchCallback {
 
     public abstract boolean onMove(int fromPosition, int toPosition);
     public abstract void onSwiped(int position, int direction);
+
 }
