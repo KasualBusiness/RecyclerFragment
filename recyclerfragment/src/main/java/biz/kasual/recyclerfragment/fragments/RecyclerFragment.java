@@ -39,18 +39,10 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
     private Callback<List<T>> mCallback;
     private RefreshableRecyclerView mRefreshableRecyclerView;
     private RecyclerAdapter<T> mAdapter;
-    private OnRecyclerInteractionListener mListener;
-
-    public interface OnRecyclerInteractionListener {
-        void onItemSwiped(int position);
-    }
+    private RecyclerSectionAdapter<T> mSectionAdapter;
 
     public abstract String sortSectionMethod();
     public abstract void buildRequest(Map<String, Object> params, Callback<List<T>> callback);
-
-    public void setOnRecyclerInteractionListener(OnRecyclerInteractionListener listener) {
-        mListener = listener;
-    }
 
     public RecyclerAdapter<T> getAdapter() {
         return mAdapter;
@@ -79,6 +71,8 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
             if (sectionAdapter == null) {
                 sectionAdapter = new RecyclerSectionAdapter<>(getActivity());
             }
+
+            mSectionAdapter = sectionAdapter;
 
             sectionAdapter.setBaseAdapter(adapter);
             sectionAdapter.setSortMethodName(sortName);
@@ -140,17 +134,38 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
         }
     }
 
-    public void configureGestures(int dragDirections, int swipeDirections, @NonNull final OnRecyclerTouchListener touchListener) {
+    public void configureGestures(int dragDirections, int swipeDirections) {
+        configureGestures(dragDirections, swipeDirections, null);
+    }
+
+    public void configureGestures(int dragDirections, int swipeDirections, @Nullable final OnRecyclerTouchListener touchListener) {
         if (mRefreshableRecyclerView != null) {
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(dragDirections, swipeDirections) {
                 @Override
                 public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                    return touchListener.onMove(recyclerView, viewHolder.getLayoutPosition(), target.getLayoutPosition());
+                    return touchListener != null && touchListener.onMove(recyclerView, viewHolder.getLayoutPosition(), target.getLayoutPosition());
                 }
 
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                    touchListener.onSwiped(viewHolder.getLayoutPosition(), swipeDir);
+                    int position = viewHolder.getLayoutPosition();
+                    if (mSectionAdapter != null) {
+
+                        // Prevent swipe gesture on section items
+                        if (mSectionAdapter.isSectionHeaderPosition(position)) {
+                            mSectionAdapter.notifyDataSetChanged();
+                            return;
+                        }
+
+                        // Compute item position without sections
+                        position = mSectionAdapter.sectionPositionToPosition(position);
+                    }
+
+                    mAdapter.removeItem(position);
+
+                    if (touchListener != null) {
+                        touchListener.onSwiped(position, swipeDir);
+                    }
                 }
             });
             itemTouchHelper.attachToRecyclerView(mRefreshableRecyclerView.getRecyclerView());

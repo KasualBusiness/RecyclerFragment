@@ -40,7 +40,6 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
             @Override
             public void onChanged() {
                 mValid = mBaseAdapter.getItemCount() > 0;
-                notifyDataSetChanged();
                 buildSections(mBaseAdapter.getItems());
             }
 
@@ -53,13 +52,13 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 mValid = mBaseAdapter.getItemCount() > 0;
-                notifyItemRangeInserted(positionToSectionPosition(positionStart), itemCount);
+                buildSections(mBaseAdapter.getItems());
             }
 
             @Override
             public void onItemRangeRemoved(int positionStart, int itemCount) {
                 mValid = mBaseAdapter.getItemCount() > 0;
-                notifyItemRangeRemoved(positionToSectionPosition(positionStart), itemCount);
+                buildSections(mBaseAdapter.getItems());
             }
         });
     }
@@ -187,8 +186,7 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
                     }
 
                     //Add your adapter to the sectionAdapter
-                    Section[] dummy = new Section[sections.size()];
-                    setSections(sections.toArray(dummy));
+                    setSections(sections.toArray(new Section[sections.size()]));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
