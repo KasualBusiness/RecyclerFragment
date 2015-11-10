@@ -39,8 +39,7 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
         mBaseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
-                mValid = mBaseAdapter.getItemCount() > 0;
-                buildSections(mBaseAdapter.getItems());
+                updateSections();
             }
 
             @Override
@@ -61,7 +60,8 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
 
             @Override
             public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-                updateSections();
+                mValid = mBaseAdapter.getItemCount() > 0;
+                notifyItemMoved(positionToSectionPosition(fromPosition), positionToSectionPosition(toPosition));
             }
         });
     }

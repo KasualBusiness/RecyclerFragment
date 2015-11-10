@@ -144,7 +144,13 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
                 @Override
                 public int getDragDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                     int position = viewHolder.getLayoutPosition();
-                    return (mSectionAdapter != null && mSectionAdapter.isSectionAt(position)) ? 0 : super.getDragDirs(recyclerView, viewHolder);
+                    boolean isMovable = !(mSectionAdapter != null && mSectionAdapter.isSectionAt(position));
+
+                    if (callback != null) {
+                        isMovable = callback.canMoveAt(position);
+                    }
+
+                    return isMovable ? super.getDragDirs(recyclerView, viewHolder) : 0;
                 }
 
                 @Override
@@ -161,16 +167,22 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
 
                 @Override
                 public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                    int beginPosition = viewHolder.getLayoutPosition();
-                    int endPosition = target.getLayoutPosition();
+                    int fromPosition = viewHolder.getLayoutPosition();
+                    int toPosition = target.getLayoutPosition();
                     if (mSectionAdapter != null) {
-                        beginPosition = mSectionAdapter.sectionPositionToPosition(beginPosition);
-                        endPosition = mSectionAdapter.sectionPositionToPosition(endPosition);
+
+                        if (mSectionAdapter.isSectionAt(toPosition)) {
+                            mSectionAdapter.notifyDataSetChanged();
+                            return false;
+                        }
+
+                        fromPosition = mSectionAdapter.sectionPositionToPosition(fromPosition);
+                        toPosition = mSectionAdapter.sectionPositionToPosition(toPosition);
                     }
 
-                    mAdapter.moveItem(beginPosition, endPosition);
+                    mAdapter.moveItem(fromPosition, toPosition);
 
-                    return callback != null && callback.onMoved(beginPosition, endPosition);
+                    return callback == null || callback.onMove(fromPosition, toPosition);
                 }
 
                 @Override
