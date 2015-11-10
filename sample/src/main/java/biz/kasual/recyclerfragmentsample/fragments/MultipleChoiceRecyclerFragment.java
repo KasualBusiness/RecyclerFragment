@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Map;
 
+import biz.kasual.recyclerfragment.adapters.RecyclerAdapter;
 import biz.kasual.recyclerfragmentsample.adapters.SampleAdapter;
 import biz.kasual.recyclerfragmentsample.models.Sample;
 import retrofit.Callback;
@@ -16,12 +17,14 @@ import retrofit.Callback;
 /**
  * Created by Stephen Vinouze on 06/11/2015.
  */
-public class DefaultRecyclerFragment extends AbstractRecyclerFragment {
+public class MultipleChoiceRecyclerFragment extends AbstractRecyclerFragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View contentView = super.onCreateView(inflater, container, savedInstanceState);
+
+        mSampleAdapter.setChoiceMode(RecyclerAdapter.ChoiceMode.MULTIPLE_CHOICE);
 
         configureFragment(mRecyclerView, mSampleAdapter);
 

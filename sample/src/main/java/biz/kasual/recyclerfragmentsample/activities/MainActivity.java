@@ -8,7 +8,8 @@ import android.view.MenuItem;
 import biz.kasual.recyclerfragmentsample.R;
 import biz.kasual.recyclerfragmentsample.fragments.CustomSectionTitleRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.CustomSectionViewRecyclerFragment;
-import biz.kasual.recyclerfragmentsample.fragments.DefaultRecyclerFragment;
+import biz.kasual.recyclerfragmentsample.fragments.MultipleChoiceRecyclerFragment;
+import biz.kasual.recyclerfragmentsample.fragments.SingleChoiceRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.SectionRecyclerFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        displayDefaultRecyclerFragment();
+        displaySingleChoiceRecyclerFragment();
     }
 
     @Override
@@ -29,8 +30,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.simple_action:
-                displayDefaultRecyclerFragment();
+            case R.id.single_choice_action:
+                displaySingleChoiceRecyclerFragment();
+                break;
+
+            case R.id.multiple_choice_action:
+                displayMultipleChoiceRecyclerFragment();
                 break;
 
             case R.id.section_action:
@@ -49,9 +54,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void displayDefaultRecyclerFragment() {
-        setTitle(getString(R.string.default_recycler_name));
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new DefaultRecyclerFragment()).commit();
+    private void displaySingleChoiceRecyclerFragment() {
+        setTitle(getString(R.string.single_choice_recycler_name));
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new SingleChoiceRecyclerFragment()).commit();
+    }
+
+    private void displayMultipleChoiceRecyclerFragment() {
+        setTitle(getString(R.string.multiple_choice_recycler_name));
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new MultipleChoiceRecyclerFragment()).commit();
     }
 
     private void displaySectionRecyclerFragment() {

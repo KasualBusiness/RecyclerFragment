@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">RecyclerFragment</string>
 
-    <string name="default_recycler_name">Default list</string>
+    <string name="single_choice_recycler_name">Single choice list</string>
+    <string name="multiple_choice_recycler_name">Multiple choice list</string>
     <string name="section_recycler_name">Section list</string>
     <string name="custom_section_title_recycler_name">Custom section title list</string>
     <string name="custom_section_view_recycler_name">Custom section view list</string>

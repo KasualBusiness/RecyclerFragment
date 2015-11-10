@@ -42,7 +42,7 @@ public class SampleAdapter extends RecyclerAdapter<Sample> {
     @Override
     protected void onBindItemView(View v, int position) {
         SampleItemView sampleItemView = (SampleItemView)v;
-        sampleItemView.bind(getItemAt(position));
+        sampleItemView.bind(getItemAt(position), isItemViewToggled(position));
     }
 
 }

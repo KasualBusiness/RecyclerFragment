@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/simple_action"
+    <item android:id="@+id/single_choice_action"
           android:orderInCategory="100"
-          android:title="@string/default_recycler_name"
+          android:title="@string/single_choice_recycler_name"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/multiple_choice_action"
+          android:orderInCategory="100"
+          android:title="@string/multiple_choice_recycler_name"
           app:showAsAction="never"/>
 
     <item android:id="@+id/section_action"
