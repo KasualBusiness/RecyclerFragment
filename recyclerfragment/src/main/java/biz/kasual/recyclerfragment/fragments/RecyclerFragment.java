@@ -24,7 +24,6 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
 
     private boolean mHasNextPage;
     private boolean mIsLoading;
-    private boolean mIsPaginable;
     private boolean mIsRefreshable;
     private int mCurrentPage = 1;
     private RefreshableRecyclerView mRefreshableRecyclerView;
@@ -232,15 +231,6 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
         }
     }
 
-    public void clearItems() {
-        if (mAdapter != null) {
-            mAdapter.clearItems();
-        }
-        else {
-            throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");
-        }
-    }
-
     public void displayItems(@Nullable List<T> items) {
         displayItems(items, 1);
     }
@@ -272,65 +262,20 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
             if (mIsRefreshable) {
                 mRefreshableRecyclerView.getRefreshLayout().setRefreshing(false);
             }
-
-            if (mIsPaginable && page > 1) {
-                // TODO : Remove footer loader view
-            }
         }
         else {
             throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");
         }
     }
 
-//    public void fetchItems(@Nullable Map<String, Object> params, Callback<List<T>> callback) {
-//        mFetchParams = params;
-//        mCallback = callback;
-//
-//        fetchItemsAtPage(1);
-//    }
-//
-//    private void fetchItemsAtPage(final int page) {
-//        if (!mIsLoading) {
-//            mIsLoading = true;
-//            mCurrentPage = page;
-//
-//            final Map<String, Object> params = new HashMap<>();
-//
-//            if (mIsPaginable) {
-//                params.put(PAGE_QUERY_KEY, Integer.toString(page));
-//                params.put(PER_PAGE_QUERY_KEY, Integer.toString(mPerPage));
-//            }
-//
-//            if (mFetchParams != null && !mFetchParams.isEmpty()) {
-//                params.putAll(mFetchParams);
-//            }
-//
-//            buildRequest(params, new Callback<List<T>>() {
-//                @Override
-//                public void success(List<T> items, Response response) {
-//                    mIsLoading = false;
-//
-//                    if (mCallback != null) {
-//                        mCallback.success(items, response);
-//                    }
-//                }
-//
-//                @Override
-//                public void failure(RetrofitError error) {
-//                    mIsLoading = false;
-//
-//                    if (mCallback != null) {
-//                        mCallback.failure(error);
-//                    }
-//                }
-//            });
-//        }
-//    }
-//
-//    private void fetchNextPage() {
-//        // TODO : Add footer loader view
-//        fetchItemsAtPage(mCurrentPage + 1);
-//    }
+    public void clearItems() {
+        if (mAdapter != null) {
+            mAdapter.clearItems();
+        }
+        else {
+            throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");
+        }
+    }
 
     /**
      * Allow smart pagination to give a smooth user experience while paginating by triggering the pagination given the total amount of items in the list
