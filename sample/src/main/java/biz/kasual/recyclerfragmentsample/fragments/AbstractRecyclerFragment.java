@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import biz.kasual.recyclerfragment.fragments.RecyclerFragment;
-import biz.kasual.recyclerfragment.interfaces.OnRecyclerItemListener;
+import biz.kasual.recyclerfragment.callbacks.OnRecyclerClickCallback;
 import biz.kasual.recyclerfragment.views.RefreshableRecyclerView;
 import biz.kasual.recyclerfragmentsample.R;
 import biz.kasual.recyclerfragmentsample.adapters.SampleAdapter;
@@ -29,7 +29,7 @@ public abstract class AbstractRecyclerFragment extends RecyclerFragment<Sample> 
 
         mRecyclerView = (RefreshableRecyclerView)contentView.findViewById(R.id.refreshable_recycler_view);
         mSampleAdapter = new SampleAdapter(getActivity());
-        mSampleAdapter.setOnRecyclerItemListener(new OnRecyclerItemListener<Sample>() {
+        mSampleAdapter.setOnRecyclerClickCallback(new OnRecyclerClickCallback<Sample>() {
             @Override
             public void onItemClick(Sample sample) {
                 Toast.makeText(getActivity(), "Click detected for item " + sample.getName(), Toast.LENGTH_SHORT).show();

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Map;
 
+import biz.kasual.recyclerfragment.callbacks.OnRecyclerTouchCallback;
 import biz.kasual.recyclerfragmentsample.adapters.SampleAdapter;
 import biz.kasual.recyclerfragmentsample.models.Sample;
 import retrofit.Callback;
@@ -25,7 +26,17 @@ public class GestureRecyclerFragment extends AbstractRecyclerFragment {
         View contentView = super.onCreateView(inflater, container, savedInstanceState);
 
         configureFragment(mRecyclerView, mSampleAdapter);
-        configureGestures(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        configureGestures(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, new OnRecyclerTouchCallback() {
+            @Override
+            public boolean onMoved(int beginPosition, int endPosition) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(int position, int direction) {
+
+            }
+        });
 
         List<Sample> samples = SampleAdapter.buildSamples();
 

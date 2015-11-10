@@ -15,7 +15,7 @@ import java.util.Map;
 
 import biz.kasual.recyclerfragment.adapters.RecyclerAdapter;
 import biz.kasual.recyclerfragment.adapters.RecyclerSectionAdapter;
-import biz.kasual.recyclerfragment.interfaces.OnRecyclerTouchListener;
+import biz.kasual.recyclerfragment.callbacks.OnRecyclerTouchCallback;
 import biz.kasual.recyclerfragment.views.RefreshableRecyclerView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -138,19 +138,25 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
         configureGestures(dragDirections, swipeDirections, null);
     }
 
-    public void configureGestures(int dragDirections, int swipeDirections, @Nullable final OnRecyclerTouchListener touchListener) {
+    public void configureGestures(int dragDirections, int swipeDirections, @Nullable final OnRecyclerTouchCallback callback) {
         if (mRefreshableRecyclerView != null) {
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(dragDirections, swipeDirections) {
-                @Override
-                public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                    int position = viewHolder.getLayoutPosition();
-                    return (mSectionAdapter != null && mSectionAdapter.isSectionAt(position)) ? 0 : super.getSwipeDirs(recyclerView, viewHolder);
-                }
-
                 @Override
                 public int getDragDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                     int position = viewHolder.getLayoutPosition();
                     return (mSectionAdapter != null && mSectionAdapter.isSectionAt(position)) ? 0 : super.getDragDirs(recyclerView, viewHolder);
+                }
+
+                @Override
+                public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                    int position = viewHolder.getLayoutPosition();
+                    boolean isSwipeable = !(mSectionAdapter != null && mSectionAdapter.isSectionAt(position));
+
+                    if (callback != null) {
+                       isSwipeable = callback.canSwipeAt(position);
+                    }
+
+                    return isSwipeable ? super.getSwipeDirs(recyclerView, viewHolder) : 0;
                 }
 
                 @Override
@@ -164,7 +170,7 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
 
                     mAdapter.moveItem(beginPosition, endPosition);
 
-                    return touchListener != null && touchListener.onMove(recyclerView, beginPosition, endPosition);
+                    return callback != null && callback.onMoved(beginPosition, endPosition);
                 }
 
                 @Override
@@ -176,8 +182,8 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
 
                     mAdapter.removeItem(position);
 
-                    if (touchListener != null) {
-                        touchListener.onSwiped(position, swipeDir);
+                    if (callback != null) {
+                        callback.onSwiped(position, swipeDir);
                     }
                 }
             });
