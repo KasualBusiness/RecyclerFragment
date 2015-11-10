@@ -12,33 +12,28 @@ import java.util.List;
 import java.util.Map;
 
 import biz.kasual.recyclerfragmentsample.adapters.SampleAdapter;
-import biz.kasual.recyclerfragmentsample.adapters.SampleSectionTitleAdapter;
+import biz.kasual.recyclerfragmentsample.adapters.SampleSectionViewAdapter;
 import biz.kasual.recyclerfragmentsample.models.Sample;
 import retrofit.Callback;
 
 /**
  * Created by Stephen Vinouze on 06/11/2015.
  */
-public class CustomSectionTitleRecyclerFragment extends AbstractRecyclerFragment {
+public class CustomSectionRecyclerFragment extends AbstractRecyclerFragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View contentView = super.onCreateView(inflater, container, savedInstanceState);
 
-        configureFragment(mRecyclerView, mSampleAdapter, new SampleSectionTitleAdapter(getActivity()));
+        configureFragment(mRecyclerView, mSampleAdapter, new SampleSectionViewAdapter(getActivity()));
 
         List<Sample> samples = SampleAdapter.buildSamples();
 
         Collections.sort(samples, new Comparator<Sample>() {
             @Override
             public int compare(Sample lhs, Sample rhs) {
-                try {
-                    return lhs.getRate() - rhs.getRate();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return 0;
+                return lhs.getRate() - rhs.getRate();
             }
         });
 

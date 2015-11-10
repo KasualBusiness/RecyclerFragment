@@ -6,12 +6,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import biz.kasual.recyclerfragmentsample.R;
-import biz.kasual.recyclerfragmentsample.fragments.CustomSectionTitleRecyclerFragment;
-import biz.kasual.recyclerfragmentsample.fragments.CustomSectionViewRecyclerFragment;
+import biz.kasual.recyclerfragmentsample.fragments.CustomSectionRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.GestureRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.MultipleChoiceRecyclerFragment;
-import biz.kasual.recyclerfragmentsample.fragments.SingleChoiceRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.SectionRecyclerFragment;
+import biz.kasual.recyclerfragmentsample.fragments.SingleChoiceRecyclerFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,12 +42,8 @@ public class MainActivity extends AppCompatActivity {
                 displaySectionRecyclerFragment();
                 break;
 
-            case R.id.custom_section_title_action:
-                displayCustomSectionTitleRecyclerFragment();
-                break;
-
-            case R.id.custom_section_view_action:
-                displayCustomSectionViewRecyclerFragment();
+            case R.id.custom_section_action:
+                displayCustomSectionRecyclerFragment();
                 break;
 
             case R.id.gesture_action:
@@ -74,14 +69,9 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new SectionRecyclerFragment()).commit();
     }
 
-    private void displayCustomSectionTitleRecyclerFragment() {
-        setTitle(getString(R.string.custom_section_title_recycler_name));
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new CustomSectionTitleRecyclerFragment()).commit();
-    }
-
-    private void displayCustomSectionViewRecyclerFragment() {
-        setTitle(getString(R.string.custom_section_view_recycler_name));
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new CustomSectionViewRecyclerFragment()).commit();
+    private void displayCustomSectionRecyclerFragment() {
+        setTitle(getString(R.string.custom_section_recycler_name));
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new CustomSectionRecyclerFragment()).commit();
     }
 
     private void displayGestureRecyclerFragment() {

@@ -17,6 +17,17 @@ public class SampleSectionViewAdapter extends RecyclerSectionAdapter<Sample> {
         super(context);
     }
 
+    /**
+     * Note that overriding this method allow you to customize the title displayed into the default section layout
+     * Hence doing so will both ignore your @see(onCreateSectionItemView()) and @see(onBindSectionItemView()) methods
+     * Default implementation returns null and is based on your sorting method to display the sections
+     * In this example we choose to implement the custom section view callbacks to let you see how to display sections without the default section layout
+     */
+    @Override
+    public String titleForSection(int sectionPosition) {
+        return null;
+    }
+
     @Override
     public View onCreateSectionItemView(ViewGroup parent, int viewType) {
         return new SampleSectionItemView(mContext);
