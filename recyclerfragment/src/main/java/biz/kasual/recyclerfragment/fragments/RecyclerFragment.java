@@ -56,6 +56,14 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
         configureFragment(refreshableRecyclerView, adapter, null);
     }
 
+    /**
+     * The primary method to configure your fragment by indicating your inflated RefrRefreshableRecyclerView and your RecyclerAdapter<T>
+     * You may provide as well a RecyclerSectionAdapter<T> depending of your section customization needs
+     * Note that this method must be called before attempting to display any item on the list. Attempting so will throw a IllegalStateException
+     * @param refreshableRecyclerView The refreshable RecyclerView that you are using in your layout
+     * @param adapter Your adapter overriding RecyclerAdapter<T>
+     * @param sectionAdapter Your optional section adapter overriding RecyclerSectionAdapter<T>
+     */
     public void configureFragment(@NonNull RefreshableRecyclerView refreshableRecyclerView, @NonNull RecyclerAdapter<T> adapter, @Nullable RecyclerSectionAdapter<T> sectionAdapter) {
         mRefreshableRecyclerView = refreshableRecyclerView;
         mAdapter = adapter;
@@ -86,6 +94,13 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
         enableRefresh(false);
     }
 
+    /**
+     * Enable your list to be paginable. It is based on the perPage parameters that you may need to set in order to make it work (default is 20)
+     * This perPage parameter MUST MATCH your requirements as it is based on this paramater to determine whether there is another page to be fetched
+     * Note that pagination will be ignore whether you are using sections. Same if you are using a LayoutManager that does not extend LinearLayoutManager.
+     * @see #setPerPage(int perPage)
+     * @param isPaginable A boolean to enable pagination
+     */
     public void enablePagination(boolean isPaginable) {
         if (mRefreshableRecyclerView != null) {
 
@@ -115,6 +130,9 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
         }
     }
 
+    /**
+     * Enable the PullToRefresh feature directly embedded inside the RefreshableRecyclerView
+     */
     public void enableRefresh(boolean isRefreshable) {
         if (mRefreshableRecyclerView != null) {
 
@@ -138,6 +156,13 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
         configureGestures(dragDirections, swipeDirections, null);
     }
 
+    /**
+     * Configure your gestures if any for both move and swipe gestures.
+     * You can also implement the OnRecyclerTouchCallback to be notified of the move/swipe events as well as enabling/disabling these gestures for some specific items
+     * @param dragDirections The move directions. Can be either ItemTouchHelper.LEFT, ItemTouchHelper.RIGHT, ItemTouchHelper.UP or ItemTouchHelper.DOWN
+     * @param swipeDirections The swipe directions. Can be either ItemTouchHelper.LEFT, ItemTouchHelper.RIGHT, ItemTouchHelper.UP or ItemTouchHelper.DOWN
+     * @param callback The gesture callbacks
+     */
     public void configureGestures(int dragDirections, int swipeDirections, @Nullable final OnRecyclerTouchCallback callback) {
         if (mRefreshableRecyclerView != null) {
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(dragDirections, swipeDirections) {
@@ -223,6 +248,10 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
         }
     }
 
+    /**
+     * Display your items inside your configured adapter and let it fill it depending on the pagination configuration
+     * @param newResults The items to be displayed in your list
+     */
     public void displayItems(@Nullable List<T> newResults) {
         if (mAdapter != null) {
 
@@ -303,6 +332,11 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
         fetchItemsAtPage(mCurrentPage + 1);
     }
 
+    /**
+     * Allow smart pagination to give a smooth user experience while paginating by triggering the pagination given the total amount of items in the list
+     * @param totalItemCount Total amount of items in the list
+     * @return The computed pagination trigger
+     */
     private int getPaginationTrigger(int totalItemCount) {
         float offset = 0.6f;
         if (totalItemCount > 50 && totalItemCount <= 100) {
