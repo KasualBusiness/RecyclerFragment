@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import biz.kasual.recyclerfragmentsample.R;
 import biz.kasual.recyclerfragmentsample.fragments.CustomSectionTitleRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.CustomSectionViewRecyclerFragment;
+import biz.kasual.recyclerfragmentsample.fragments.GestureRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.MultipleChoiceRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.SingleChoiceRecyclerFragment;
 import biz.kasual.recyclerfragmentsample.fragments.SectionRecyclerFragment;
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
                 displayMultipleChoiceRecyclerFragment();
                 break;
 
+            case R.id.gesture_action:
+                displayGestureRecyclerFragment();
+                break;
+
             case R.id.section_action:
                 displaySectionRecyclerFragment();
                 break;
@@ -62,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
     private void displayMultipleChoiceRecyclerFragment() {
         setTitle(getString(R.string.multiple_choice_recycler_name));
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new MultipleChoiceRecyclerFragment()).commit();
+    }
+
+    private void displayGestureRecyclerFragment() {
+        setTitle(getString(R.string.gesture_recycler_name));
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new GestureRecyclerFragment()).commit();
     }
 
     private void displaySectionRecyclerFragment() {

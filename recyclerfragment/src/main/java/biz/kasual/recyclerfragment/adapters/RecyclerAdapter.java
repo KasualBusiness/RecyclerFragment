@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import biz.kasual.recyclerfragment.interfaces.OnRecyclerItemListener;
 import biz.kasual.recyclerfragment.views.ViewHolder;
 
 /**
@@ -17,18 +18,13 @@ import biz.kasual.recyclerfragment.views.ViewHolder;
  */
 public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
-    public interface OnRecyclerItemListener<T> {
-        void onItemClick(T t);
-        boolean onItemLongClick(T t);
-    }
-
-    public enum ChoiceMode { SINGLE_CHOICE, MULTIPLE_CHOICE }
-
     protected Context mContext;
     protected List<T> mItems = new ArrayList<>();
     private ChoiceMode mChoiceMode = ChoiceMode.SINGLE_CHOICE;
     private SparseBooleanArray selectedItemViews = new SparseBooleanArray();
     private OnRecyclerItemListener<T> mListener;
+
+    public enum ChoiceMode { SINGLE_CHOICE, MULTIPLE_CHOICE }
 
     public RecyclerAdapter(Context context) {
         mContext = context;

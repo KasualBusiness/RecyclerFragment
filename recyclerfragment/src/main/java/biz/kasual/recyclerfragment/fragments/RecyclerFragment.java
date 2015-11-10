@@ -15,6 +15,7 @@ import java.util.Map;
 
 import biz.kasual.recyclerfragment.adapters.RecyclerAdapter;
 import biz.kasual.recyclerfragment.adapters.RecyclerSectionAdapter;
+import biz.kasual.recyclerfragment.interfaces.OnRecyclerTouchListener;
 import biz.kasual.recyclerfragment.views.RefreshableRecyclerView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -139,26 +140,20 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
         }
     }
 
-    public void enableSwipe(int direction) {
+    public void configureGestures(int dragDirections, int swipeDirections, @NonNull final OnRecyclerTouchListener touchListener) {
         if (mRefreshableRecyclerView != null) {
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(dragDirections, swipeDirections) {
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    return touchListener.onMove(recyclerView, viewHolder.getLayoutPosition(), target.getLayoutPosition());
+                }
 
-            RecyclerView recyclerView = mRefreshableRecyclerView.getRecyclerView();
-            if (direction > 0) {
-                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, direction) {
-                    @Override
-                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                        return false;
-                    }
-
-                    @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                        if (mListener != null) {
-                            mListener.onItemSwiped(viewHolder.getLayoutPosition());
-                        }
-                    }
-                });
-                itemTouchHelper.attachToRecyclerView(recyclerView);
-            }
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                    touchListener.onSwiped(viewHolder.getLayoutPosition(), swipeDir);
+                }
+            });
+            itemTouchHelper.attachToRecyclerView(mRefreshableRecyclerView.getRecyclerView());
         }
         else {
             throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");

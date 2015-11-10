@@ -5,8 +5,10 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import biz.kasual.recyclerfragment.fragments.RecyclerFragment;
+import biz.kasual.recyclerfragment.interfaces.OnRecyclerItemListener;
 import biz.kasual.recyclerfragment.views.RefreshableRecyclerView;
 import biz.kasual.recyclerfragmentsample.R;
 import biz.kasual.recyclerfragmentsample.adapters.SampleAdapter;
@@ -27,6 +29,18 @@ public abstract class AbstractRecyclerFragment extends RecyclerFragment<Sample> 
 
         mRecyclerView = (RefreshableRecyclerView)contentView.findViewById(R.id.refreshable_recycler_view);
         mSampleAdapter = new SampleAdapter(getActivity());
+        mSampleAdapter.setOnRecyclerItemListener(new OnRecyclerItemListener<Sample>() {
+            @Override
+            public void onItemClick(Sample sample) {
+                Toast.makeText(getActivity(), "Click detected for item " + sample.getName(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public boolean onItemLongClick(Sample sample) {
+                Toast.makeText(getActivity(), "Long click detected for item " + sample.getName(), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
 
         return contentView;
     }
