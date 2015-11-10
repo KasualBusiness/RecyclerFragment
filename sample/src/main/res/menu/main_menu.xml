@@ -11,11 +11,6 @@
           android:title="@string/multiple_choice_recycler_name"
           app:showAsAction="never"/>
 
-    <item android:id="@+id/gesture_action"
-          android:orderInCategory="100"
-          android:title="@string/gesture_recycler_name"
-          app:showAsAction="never"/>
-
     <item android:id="@+id/section_action"
           android:orderInCategory="100"
           android:title="@string/section_recycler_name"
@@ -29,5 +24,10 @@
     <item android:id="@+id/custom_section_view_action"
           android:orderInCategory="100"
           android:title="@string/custom_section_view_recycler_name"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/gesture_action"
+          android:orderInCategory="100"
+          android:title="@string/gesture_recycler_name"
           app:showAsAction="never"/>
 </menu>

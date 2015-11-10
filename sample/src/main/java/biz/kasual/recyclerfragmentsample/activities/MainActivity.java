@@ -39,10 +39,6 @@ public class MainActivity extends AppCompatActivity {
                 displayMultipleChoiceRecyclerFragment();
                 break;
 
-            case R.id.gesture_action:
-                displayGestureRecyclerFragment();
-                break;
-
             case R.id.section_action:
                 displaySectionRecyclerFragment();
                 break;
@@ -53,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.custom_section_view_action:
                 displayCustomSectionViewRecyclerFragment();
+                break;
+
+            case R.id.gesture_action:
+                displayGestureRecyclerFragment();
                 break;
         }
 
@@ -69,11 +69,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new MultipleChoiceRecyclerFragment()).commit();
     }
 
-    private void displayGestureRecyclerFragment() {
-        setTitle(getString(R.string.gesture_recycler_name));
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new GestureRecyclerFragment()).commit();
-    }
-
     private void displaySectionRecyclerFragment() {
         setTitle(getString(R.string.section_recycler_name));
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new SectionRecyclerFragment()).commit();
@@ -87,6 +82,11 @@ public class MainActivity extends AppCompatActivity {
     private void displayCustomSectionViewRecyclerFragment() {
         setTitle(getString(R.string.custom_section_view_recycler_name));
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new CustomSectionViewRecyclerFragment()).commit();
+    }
+
+    private void displayGestureRecyclerFragment() {
+        setTitle(getString(R.string.gesture_recycler_name));
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new GestureRecyclerFragment()).commit();
     }
 
 }

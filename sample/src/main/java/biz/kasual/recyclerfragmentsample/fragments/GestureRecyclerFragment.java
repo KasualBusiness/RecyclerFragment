@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import biz.kasual.recyclerfragment.callbacks.OnRecyclerTouchCallback;
 import biz.kasual.recyclerfragmentsample.adapters.SampleAdapter;
+import biz.kasual.recyclerfragmentsample.adapters.SampleSectionViewAdapter;
 import biz.kasual.recyclerfragmentsample.models.Sample;
 import retrofit.Callback;
 
@@ -25,20 +27,17 @@ public class GestureRecyclerFragment extends AbstractRecyclerFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View contentView = super.onCreateView(inflater, container, savedInstanceState);
 
-        configureFragment(mRecyclerView, mSampleAdapter);
-        configureGestures(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, new OnRecyclerTouchCallback() {
-            @Override
-            public boolean onMoved(int beginPosition, int endPosition) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(int position, int direction) {
-
-            }
-        });
+        configureFragment(mRecyclerView, mSampleAdapter, new SampleSectionViewAdapter(getActivity()));
+        configureGestures(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
 
         List<Sample> samples = SampleAdapter.buildSamples();
+
+        Collections.sort(samples, new Comparator<Sample>() {
+            @Override
+            public int compare(Sample lhs, Sample rhs) {
+                return lhs.getRate() - rhs.getRate();
+            }
+        });
 
         displayItems(samples);
 
@@ -50,7 +49,6 @@ public class GestureRecyclerFragment extends AbstractRecyclerFragment {
 
     @Override
     public String sortSectionMethod() {
-        //return null;
         return "getRate";
     }
 }
