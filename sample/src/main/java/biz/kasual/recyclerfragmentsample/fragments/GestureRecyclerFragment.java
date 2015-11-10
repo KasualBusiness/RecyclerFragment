@@ -25,7 +25,7 @@ public class GestureRecyclerFragment extends AbstractRecyclerFragment {
         View contentView = super.onCreateView(inflater, container, savedInstanceState);
 
         configureFragment(mRecyclerView, mSampleAdapter);
-        configureGestures(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        configureGestures(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
 
         List<Sample> samples = SampleAdapter.buildSamples();
 
@@ -39,6 +39,7 @@ public class GestureRecyclerFragment extends AbstractRecyclerFragment {
 
     @Override
     public String sortSectionMethod() {
-        return null;
+        //return null;
+        return "getRate";
     }
 }

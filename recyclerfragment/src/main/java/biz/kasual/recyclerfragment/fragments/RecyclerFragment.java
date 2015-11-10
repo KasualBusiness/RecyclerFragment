@@ -142,22 +142,35 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
         if (mRefreshableRecyclerView != null) {
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(dragDirections, swipeDirections) {
                 @Override
+                public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                    int position = viewHolder.getLayoutPosition();
+                    return (mSectionAdapter != null && mSectionAdapter.isSectionAt(position)) ? 0 : super.getSwipeDirs(recyclerView, viewHolder);
+                }
+
+                @Override
+                public int getDragDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                    int position = viewHolder.getLayoutPosition();
+                    return (mSectionAdapter != null && mSectionAdapter.isSectionAt(position)) ? 0 : super.getDragDirs(recyclerView, viewHolder);
+                }
+
+                @Override
                 public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                    return touchListener != null && touchListener.onMove(recyclerView, viewHolder.getLayoutPosition(), target.getLayoutPosition());
+                    int beginPosition = viewHolder.getLayoutPosition();
+                    int endPosition = target.getLayoutPosition();
+                    if (mSectionAdapter != null) {
+                        beginPosition = mSectionAdapter.sectionPositionToPosition(beginPosition);
+                        endPosition = mSectionAdapter.sectionPositionToPosition(endPosition);
+                    }
+
+                    mAdapter.moveItem(beginPosition, endPosition);
+
+                    return touchListener != null && touchListener.onMove(recyclerView, beginPosition, endPosition);
                 }
 
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                     int position = viewHolder.getLayoutPosition();
                     if (mSectionAdapter != null) {
-
-                        // Prevent swipe gesture on section items
-                        if (mSectionAdapter.isSectionHeaderPosition(position)) {
-                            mSectionAdapter.notifyDataSetChanged();
-                            return;
-                        }
-
-                        // Compute item position without sections
                         position = mSectionAdapter.sectionPositionToPosition(position);
                     }
 

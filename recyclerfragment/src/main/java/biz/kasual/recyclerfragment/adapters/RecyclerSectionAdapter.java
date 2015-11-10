@@ -82,12 +82,12 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        return isSectionHeaderPosition(position) ? SECTION_TYPE : mBaseAdapter.getItemViewType(sectionPositionToPosition(position)) + 1;
+        return isSectionAt(position) ? SECTION_TYPE : mBaseAdapter.getItemViewType(sectionPositionToPosition(position)) + 1;
     }
 
     @Override
     public long getItemId(int position) {
-        return isSectionHeaderPosition(position) ? Integer.MAX_VALUE - mSections.indexOfKey(position) : mBaseAdapter.getItemId(sectionPositionToPosition(position));
+        return isSectionAt(position) ? Integer.MAX_VALUE - mSections.indexOfKey(position) : mBaseAdapter.getItemId(sectionPositionToPosition(position));
     }
 
     @Override
@@ -114,7 +114,7 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (isSectionHeaderPosition(position)) {
+        if (isSectionAt(position)) {
             int sectionPosition = mSections.indexOfKey(position);
             if (holder instanceof SectionViewHolder) {
                 TextView sectionTextView = ((SectionViewHolder)holder).title;
@@ -130,7 +130,7 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
         }
     }
 
-    public boolean isSectionHeaderPosition(int position) {
+    public boolean isSectionAt(int position) {
         return mSections.get(position) != null;
     }
 
@@ -154,7 +154,7 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
     }
 
     public int sectionPositionToPosition(int sectionPosition) {
-        if (isSectionHeaderPosition(sectionPosition)) {
+        if (isSectionAt(sectionPosition)) {
             return RecyclerView.NO_POSITION;
         }
 
