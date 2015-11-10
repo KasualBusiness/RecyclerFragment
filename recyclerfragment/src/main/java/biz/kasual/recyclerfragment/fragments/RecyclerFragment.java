@@ -70,8 +70,6 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
 
         RecyclerView recyclerView = mRefreshableRecyclerView.getRecyclerView();
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         String sortName = sortSectionMethod();
         if (sortName != null) {
@@ -90,8 +88,29 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
             recyclerView.setAdapter(adapter);
         }
 
+        setLayoutManager(new LinearLayoutManager(getActivity()));
+        setItemAnimator(new DefaultItemAnimator());
+
         enablePagination(false);
         enableRefresh(false);
+    }
+
+    public void setLayoutManager(@NonNull RecyclerView.LayoutManager layoutManager) {
+        if (mRefreshableRecyclerView != null) {
+            mRefreshableRecyclerView.getRecyclerView().setLayoutManager(layoutManager);
+        }
+        else {
+            throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");
+        }
+    }
+
+    public void setItemAnimator(@NonNull RecyclerView.ItemAnimator itemAnimator) {
+        if (mRefreshableRecyclerView != null) {
+            mRefreshableRecyclerView.getRecyclerView().setItemAnimator(itemAnimator);
+        }
+        else {
+            throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");
+        }
     }
 
     /**
