@@ -3,7 +3,6 @@ package biz.kasual.recyclerfragment.fragments;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,50 +14,40 @@ import biz.kasual.recyclerfragment.adapters.RecyclerAdapter;
 import biz.kasual.recyclerfragment.adapters.RecyclerSectionAdapter;
 import biz.kasual.recyclerfragment.callbacks.OnRecyclerFetchCallback;
 import biz.kasual.recyclerfragment.callbacks.OnRecyclerTouchCallback;
-import biz.kasual.recyclerfragment.views.RefreshableRecyclerView;
 
 /**
  * Created by Stephen Vinouze on 09/11/2015.
  */
-public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public abstract class RecyclerFragment<T> extends Fragment {
 
     private boolean mHasNextPage;
     private boolean mIsLoading;
-    private boolean mIsRefreshable;
     private int mCurrentPage = 1;
-    private RefreshableRecyclerView mRefreshableRecyclerView;
+    private RecyclerView mRecyclerView;
     private RecyclerAdapter<T> mAdapter;
     private RecyclerSectionAdapter<T> mSectionAdapter;
 
     public abstract String sortSectionMethod();
 
-    public RecyclerAdapter<T> getAdapter() {
-        return mAdapter;
-    }
-
-    public RefreshableRecyclerView getRefreshableRecyclerView() {
-        return mRefreshableRecyclerView;
-    }
-
-    public void configureFragment(@NonNull RefreshableRecyclerView refreshableRecyclerView, @NonNull RecyclerAdapter<T> adapter) {
-        configureFragment(refreshableRecyclerView, adapter, null);
+    public void configureFragment(@NonNull RecyclerView recyclerView, @NonNull RecyclerAdapter<T> adapter) {
+        configureFragment(recyclerView, adapter, null);
     }
 
     /**
      * The primary method to configure your fragment by indicating your inflated RefrRefreshableRecyclerView and your RecyclerAdapter<T>
      * You may provide as well a RecyclerSectionAdapter<T> depending of your section customization needs
      * Note that this method must be called before attempting to display any item on the list. Attempting so will throw a IllegalStateException
-     * @param refreshableRecyclerView The refreshable RecyclerView that you are using in your layout
+     * @param recyclerView The RecyclerView that you are using in your layout
      * @param adapter Your adapter overriding RecyclerAdapter<T>
      * @param sectionAdapter Your optional section adapter overriding RecyclerSectionAdapter<T>
      */
-    public void configureFragment(@NonNull RefreshableRecyclerView refreshableRecyclerView,
+    public void configureFragment(@NonNull RecyclerView recyclerView,
                                   @NonNull RecyclerAdapter<T> adapter,
                                   @Nullable RecyclerSectionAdapter<T> sectionAdapter) {
-        mRefreshableRecyclerView = refreshableRecyclerView;
+        mRecyclerView = recyclerView;
         mAdapter = adapter;
 
-        RecyclerView recyclerView = mRefreshableRecyclerView.getRecyclerView();
+        recyclerView.setHasFixedSize(true);
 
         String sortName = sortSectionMethod();
         if (sortName != null) {
@@ -79,13 +68,11 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
 
         setLayoutManager(new LinearLayoutManager(getActivity()));
         setItemAnimator(new DefaultItemAnimator());
-
-        enableRefresh(false);
     }
 
     public void setLayoutManager(@NonNull RecyclerView.LayoutManager layoutManager) {
-        if (mRefreshableRecyclerView != null) {
-            mRefreshableRecyclerView.getRecyclerView().setLayoutManager(layoutManager);
+        if (mRecyclerView != null) {
+            mRecyclerView.setLayoutManager(layoutManager);
         }
         else {
             throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");
@@ -93,8 +80,8 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
     }
 
     public void setItemAnimator(@NonNull RecyclerView.ItemAnimator itemAnimator) {
-        if (mRefreshableRecyclerView != null) {
-            mRefreshableRecyclerView.getRecyclerView().setItemAnimator(itemAnimator);
+        if (mRecyclerView != null) {
+            mRecyclerView.setItemAnimator(itemAnimator);
         }
         else {
             throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");
@@ -109,15 +96,14 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
 //     * @param isPaginable A boolean to enable pagination
 //     */
     public void configurePagination(@NonNull final OnRecyclerFetchCallback<T> callback) {
-        if (mRefreshableRecyclerView != null) {
+        if (mRecyclerView != null) {
 
             if (sortSectionMethod() == null) {
 
-                RecyclerView recyclerView = mRefreshableRecyclerView.getRecyclerView();
-                final RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                final RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
 
                 if (layoutManager instanceof LinearLayoutManager) {
-                    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                         @Override
                         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                             super.onScrolled(recyclerView, dx, dy);
@@ -129,23 +115,6 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
                     });
                 }
             }
-        }
-        else {
-            throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");
-        }
-    }
-
-    /**
-     * Enable the PullToRefresh feature directly embedded inside the RefreshableRecyclerView
-     */
-    public void enableRefresh(boolean isRefreshable) {
-        if (mRefreshableRecyclerView != null) {
-
-            mIsRefreshable = isRefreshable;
-
-            SwipeRefreshLayout refreshLayout = mRefreshableRecyclerView.getRefreshLayout();
-            refreshLayout.setEnabled(isRefreshable);
-            refreshLayout.setOnRefreshListener(this);
         }
         else {
             throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");
@@ -164,7 +133,7 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
      * @param callback The gesture callbacks
      */
     public void configureGestures(int dragDirections, int swipeDirections, @Nullable final OnRecyclerTouchCallback callback) {
-        if (mRefreshableRecyclerView != null) {
+        if (mRecyclerView != null) {
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(dragDirections, swipeDirections) {
                 @Override
                 public int getDragDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
@@ -224,7 +193,7 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
                     }
                 }
             });
-            itemTouchHelper.attachToRecyclerView(mRefreshableRecyclerView.getRecyclerView());
+            itemTouchHelper.attachToRecyclerView(mRecyclerView);
         }
         else {
             throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");
@@ -258,10 +227,6 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
             else {
                 mHasNextPage = false;
             }
-
-            if (mIsRefreshable) {
-                mRefreshableRecyclerView.getRefreshLayout().setRefreshing(false);
-            }
         }
         else {
             throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");
@@ -294,11 +259,6 @@ public abstract class RecyclerFragment<T> extends Fragment implements SwipeRefre
             offset = 0.9f;
         }
         return (int)Math.floor(offset * totalItemCount);
-    }
-
-    @Override
-    public void onRefresh() {
-        //fetchItemsAtPage(1);
     }
 
 }
