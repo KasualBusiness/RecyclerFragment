@@ -5,8 +5,8 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "biz.kasual.recyclerfragment"
-        minSdkVersion 14
+        applicationId "biz.kasual.recyclerfragmentsample"
+        minSdkVersion 7
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
