@@ -6,9 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import biz.kasual.recyclerfragment.callbacks.ClickCallback;
 import biz.kasual.recyclerfragment.fragments.RecyclerFragment;
 import biz.kasual.recyclerfragmentsample.R;
 import biz.kasual.recyclerfragmentsample.adapters.SampleAdapter;
@@ -28,15 +26,7 @@ public abstract class AbstractRecyclerFragment extends RecyclerFragment<Sample> 
         View contentView = inflater.inflate(R.layout.recycler_layout, container, false);
 
         mRecyclerView = (RecyclerView)contentView.findViewById(R.id.recycler_view);
-
         mSampleAdapter = new SampleAdapter(getActivity());
-        mSampleAdapter.setClickCallback(new ClickCallback() {
-            @Override
-            public void onItemClick(int position) {
-                Sample sample = mSampleAdapter.getItemAt(position);
-                Toast.makeText(getActivity(), "Click on sample " + sample.getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
 
         return contentView;
     }
