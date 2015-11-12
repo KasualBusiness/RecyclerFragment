@@ -120,6 +120,7 @@ public abstract class RecyclerFragment<T> extends Fragment {
                             super.onScrolled(recyclerView, dx, dy);
 
                             if (!mIsLoading && mHasNextPage && (((LinearLayoutManager) layoutManager).findLastVisibleItemPosition()) > getPaginationTrigger(layoutManager.getItemCount())) {
+                                mIsLoading = true;
                                 callback.fetchNextPage(++mCurrentPage);
                             }
                         }
@@ -240,6 +241,8 @@ public abstract class RecyclerFragment<T> extends Fragment {
             else {
                 mHasNextPage = false;
             }
+
+            mIsLoading = false;
         }
         else {
             throw new IllegalStateException("The fragment has not been initialized. Use configureFragment() method");
