@@ -12,8 +12,8 @@ import java.util.List;
 
 import biz.kasual.recyclerfragment.adapters.RecyclerAdapter;
 import biz.kasual.recyclerfragment.adapters.RecyclerSectionAdapter;
-import biz.kasual.recyclerfragment.callbacks.OnRecyclerFetchCallback;
-import biz.kasual.recyclerfragment.callbacks.OnRecyclerTouchCallback;
+import biz.kasual.recyclerfragment.callbacks.PaginationCallback;
+import biz.kasual.recyclerfragment.callbacks.GestureCallback;
 
 /**
  * Created by Stephen Vinouze on 09/11/2015.
@@ -70,6 +70,12 @@ public abstract class RecyclerFragment<T> extends Fragment {
         setItemAnimator(new DefaultItemAnimator());
     }
 
+    /**
+     * Let the user define a layout manager for your recycler view
+     * Default is LinearLayoutManager
+     * @param layoutManager The layout manager you want to attach to your recycler view.
+     * @throws IllegalStateException if you call this method before configuring your fragment
+     */
     public void setLayoutManager(@NonNull RecyclerView.LayoutManager layoutManager) {
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(layoutManager);
@@ -79,6 +85,12 @@ public abstract class RecyclerFragment<T> extends Fragment {
         }
     }
 
+    /**
+     * Let the user define an item animator for your recycler view
+     * Default is DefaultItemAnimator
+     * @param itemAnimator The item animator you want to attach to your recycler view.
+     * @throws IllegalStateException if you call this method before configuring your fragment
+     */
     public void setItemAnimator(@NonNull RecyclerView.ItemAnimator itemAnimator) {
         if (mRecyclerView != null) {
             mRecyclerView.setItemAnimator(itemAnimator);
@@ -88,14 +100,13 @@ public abstract class RecyclerFragment<T> extends Fragment {
         }
     }
 
-//    /**
-//     * Enable your list to be paginable. It is based on the perPage parameters that you may need to set in order to make it work (default is 20)
-//     * This perPage parameter MUST MATCH your requirements as it is based on this paramater to determine whether there is another page to be fetched
-//     * Note that pagination will be ignore whether you are using sections. Same if you are using a LayoutManager that does not extend LinearLayoutManager.
-//     * @see #setPerPage(int perPage)
-//     * @param isPaginable A boolean to enable pagination
-//     */
-    public void configurePagination(@NonNull final OnRecyclerFetchCallback<T> callback) {
+    /**
+     * Enable your list to be paginable. Trigger an event to let the user fetch the next page
+     * Note that pagination will be ignore whether you are using sections. Same if you are using a LayoutManager that does not extend LinearLayoutManager.
+     * @param callback The pagination callback that let you fetch your pages
+     * @throws IllegalStateException if you call this method before configuring your fragment
+     */
+    public void setPaginationCallback(@NonNull final PaginationCallback callback) {
         if (mRecyclerView != null) {
 
             if (sortSectionMethod() == null) {
@@ -121,8 +132,8 @@ public abstract class RecyclerFragment<T> extends Fragment {
         }
     }
 
-    public void configureGestures(int dragDirections, int swipeDirections) {
-        configureGestures(dragDirections, swipeDirections, null);
+    public void setGestureCallback(int dragDirections, int swipeDirections) {
+        setGestureCallback(dragDirections, swipeDirections, null);
     }
 
     /**
@@ -130,9 +141,10 @@ public abstract class RecyclerFragment<T> extends Fragment {
      * You can also implement the OnRecyclerTouchCallback to be notified of the move/swipe events as well as enabling/disabling these gestures for some specific items
      * @param dragDirections The move directions. Can be either ItemTouchHelper.LEFT, ItemTouchHelper.RIGHT, ItemTouchHelper.UP or ItemTouchHelper.DOWN
      * @param swipeDirections The swipe directions. Can be either ItemTouchHelper.LEFT, ItemTouchHelper.RIGHT, ItemTouchHelper.UP or ItemTouchHelper.DOWN
-     * @param callback The gesture callbacks
+     * @param callback The gesture callback
+     * @throws IllegalStateException if you call this method before configuring your fragment
      */
-    public void configureGestures(int dragDirections, int swipeDirections, @Nullable final OnRecyclerTouchCallback callback) {
+    public void setGestureCallback(int dragDirections, int swipeDirections, @Nullable final GestureCallback callback) {
         if (mRecyclerView != null) {
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(dragDirections, swipeDirections) {
                 @Override
@@ -208,6 +220,7 @@ public abstract class RecyclerFragment<T> extends Fragment {
      * Display your items inside your configured adapter and let it fill it depending on the pagination configuration
      * @param items The items to be displayed in your list
      * @param page The page to display
+     * @throws IllegalStateException if you call this method before configuring your fragment
      */
     public void displayItems(@Nullable List<T> items, int page) {
         if (mAdapter != null) {
@@ -233,6 +246,10 @@ public abstract class RecyclerFragment<T> extends Fragment {
         }
     }
 
+    /**
+     * Clear your items from your adapter
+     * @throws IllegalStateException if you call this method before configuring your fragment
+     */
     public void clearItems() {
         if (mAdapter != null) {
             mAdapter.clearItems();

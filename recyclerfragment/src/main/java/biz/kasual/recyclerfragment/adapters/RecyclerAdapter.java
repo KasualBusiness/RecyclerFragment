@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import biz.kasual.recyclerfragment.callbacks.OnRecyclerClickCallback;
+import biz.kasual.recyclerfragment.callbacks.ClickCallback;
 import biz.kasual.recyclerfragment.views.ViewHolder;
 
 /**
@@ -22,7 +22,7 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<ViewHolder
     protected List<T> mItems = new ArrayList<>();
     private ChoiceMode mChoiceMode = ChoiceMode.SINGLE_CHOICE;
     private SparseBooleanArray selectedItemViews = new SparseBooleanArray();
-    private OnRecyclerClickCallback<T> mCallback;
+    private ClickCallback mCallback;
 
     public enum ChoiceMode { SINGLE_CHOICE, MULTIPLE_CHOICE }
 
@@ -30,7 +30,7 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<ViewHolder
         mContext = context;
     }
 
-    public void setOnRecyclerClickCallback(OnRecyclerClickCallback<T> callback) {
+    public void setClickCallback(ClickCallback callback) {
         mCallback = callback;
     }
 
@@ -147,7 +147,6 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final View itemView = holder.getView();
-        final T item = getItemAt(position);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +155,7 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<ViewHolder
                     toggleItemView(position);
 
                     if (mCallback != null) {
-                        mCallback.onItemClick(item);
+                        mCallback.onItemClick(position);
                     }
                 }
             }
@@ -164,7 +163,7 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<ViewHolder
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                return (mCallback != null) && mCallback.onItemLongClick(item);
+                return (mCallback != null) && mCallback.onItemLongClick(position);
             }
         });
 

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import biz.kasual.recyclerfragment.callbacks.OnRecyclerClickCallback;
+import biz.kasual.recyclerfragment.callbacks.ClickCallback;
 import biz.kasual.recyclerfragment.fragments.RecyclerFragment;
 import biz.kasual.recyclerfragmentsample.R;
 import biz.kasual.recyclerfragmentsample.adapters.SampleAdapter;
@@ -30,16 +30,11 @@ public abstract class AbstractRecyclerFragment extends RecyclerFragment<Sample> 
         mRecyclerView = (RecyclerView)contentView.findViewById(R.id.recycler_view);
 
         mSampleAdapter = new SampleAdapter(getActivity());
-        mSampleAdapter.setOnRecyclerClickCallback(new OnRecyclerClickCallback<Sample>() {
+        mSampleAdapter.setClickCallback(new ClickCallback() {
             @Override
-            public void onItemClick(Sample sample) {
-                Toast.makeText(getActivity(), "Click detected for item " + sample.getName(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public boolean onItemLongClick(Sample sample) {
-                Toast.makeText(getActivity(), "Long click detected for item " + sample.getName(), Toast.LENGTH_SHORT).show();
-                return true;
+            public void onItemClick(int position) {
+                Sample sample = mSampleAdapter.getItemAt(position);
+                Toast.makeText(getActivity(), "Click on sample " + sample.getName(), Toast.LENGTH_SHORT).show();
             }
         });
 

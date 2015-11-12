@@ -26,7 +26,7 @@ public class GestureRecyclerFragment extends AbstractRecyclerFragment {
         View contentView = super.onCreateView(inflater, container, savedInstanceState);
 
         configureFragment(mRecyclerView, mSampleAdapter, new SampleSectionViewAdapter(getActivity()));
-        configureGestures(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        setGestureCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
 
         List<Sample> samples = SampleAdapter.buildSamples();
 

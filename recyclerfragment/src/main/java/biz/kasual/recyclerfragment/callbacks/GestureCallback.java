@@ -3,7 +3,7 @@ package biz.kasual.recyclerfragment.callbacks;
 /**
  * Created by Stephen Vinouze on 10/11/2015.
  */
-public abstract class OnRecyclerTouchCallback {
+public abstract class GestureCallback {
 
     public boolean canMoveAt(int position) {
         return true;

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import biz.kasual.recyclerfragment.callbacks.OnRecyclerFetchCallback;
+import biz.kasual.recyclerfragment.callbacks.PaginationCallback;
 import biz.kasual.recyclerfragment.fragments.RecyclerFragment;
 import biz.kasual.recyclerfragmentsample.R;
 import biz.kasual.recyclerfragmentsample.adapters.SampleAdapter;
@@ -40,7 +40,7 @@ public class PaginationRecyclerFragment extends RecyclerFragment<Sample> {
         SampleAdapter sampleAdapter = new SampleAdapter(getActivity());
 
         configureFragment(recyclerView, sampleAdapter);
-        configurePagination(new OnRecyclerFetchCallback<Sample>() {
+        setPaginationCallback(new PaginationCallback() {
             @Override
             public void fetchNextPage(int nextPage) {
                 fillList(nextPage);
