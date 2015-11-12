@@ -11,14 +11,14 @@ import biz.kasual.recyclerfragment.R;
 /**
  * Created by Stephen Vinouze on 09/11/2015.
  */
-public class BasicCardView extends CardView {
+public class DefaultCardView extends CardView {
 
-    public BasicCardView(Context context) {
+    public DefaultCardView(Context context) {
         super(context);
         initView();
     }
 
-    public BasicCardView(Context context, AttributeSet attributeSet) {
+    public DefaultCardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         initView();
     }
@@ -28,7 +28,7 @@ public class BasicCardView extends CardView {
         setCardElevation(8);
         setRadius(5);
 
-        int[] attrs = new int[] { R.attr.selectableItemBackground};
+        int[] attrs = new int[] { R.attr.selectableItemBackground };
         TypedArray ta = getContext().obtainStyledAttributes(attrs);
         Drawable drawableFromTheme = ta.getDrawable(0);
         setForeground(drawableFromTheme);

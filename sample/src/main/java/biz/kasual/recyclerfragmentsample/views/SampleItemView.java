@@ -7,14 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import biz.kasual.recyclerfragment.views.BasicCardView;
+import biz.kasual.recyclerfragment.views.DefaultCardView;
 import biz.kasual.recyclerfragmentsample.R;
 import biz.kasual.recyclerfragmentsample.models.Sample;
 
 /**
  * Created by Stephen Vinouze on 09/11/2015.
  */
-public class SampleItemView extends BasicCardView {
+public class SampleItemView extends DefaultCardView {
 
     private TextView mNameTextView;
     private TextView mTickIconView;

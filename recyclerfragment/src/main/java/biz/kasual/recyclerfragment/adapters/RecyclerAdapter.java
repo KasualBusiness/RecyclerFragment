@@ -11,12 +11,12 @@ import java.util.Collections;
 import java.util.List;
 
 import biz.kasual.recyclerfragment.callbacks.ClickCallback;
-import biz.kasual.recyclerfragment.views.ViewHolder;
+import biz.kasual.recyclerfragment.views.DefaultViewHolder;
 
 /**
  * Created by Stephen Vinouze on 09/11/2015.
  */
-public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
+public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<DefaultViewHolder> {
 
     protected Context mContext;
     protected List<T> mItems = new ArrayList<>();
@@ -140,12 +140,12 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<ViewHolder
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(onCreateItemView(parent, viewType));
+    public DefaultViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new DefaultViewHolder(onCreateItemView(parent, viewType));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(DefaultViewHolder holder, final int position) {
         final View itemView = holder.getView();
 
         itemView.setOnClickListener(new View.OnClickListener() {

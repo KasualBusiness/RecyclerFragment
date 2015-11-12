@@ -15,12 +15,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import biz.kasual.recyclerfragment.R;
-import biz.kasual.recyclerfragment.views.ViewHolder;
+import biz.kasual.recyclerfragment.views.DefaultViewHolder;
 
 /**
  * Created by Stephen Vinouze on 09/11/2015.
  */
-public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
+public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<DefaultViewHolder> {
 
     private static final int SECTION_TYPE = 0;
 
@@ -96,15 +96,15 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DefaultViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == SECTION_TYPE) {
             View customView = onCreateSectionItemView(parent, viewType);
             if (customView != null && titleForSection(0) == null) {
-                return new ViewHolder(customView);
+                return new DefaultViewHolder(customView);
             }
             else {
                 final View view = LayoutInflater.from(mContext).inflate(R.layout.section_view, parent, false);
-                return new SectionViewHolder(view, R.id.section_text);
+                return new SectionDefaultViewHolder(view, R.id.section_text);
             }
         }
         else {
@@ -113,11 +113,11 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(DefaultViewHolder holder, int position) {
         if (isSectionAt(position)) {
             int sectionPosition = mSections.indexOfKey(position);
-            if (holder instanceof SectionViewHolder) {
-                TextView sectionTextView = ((SectionViewHolder)holder).title;
+            if (holder instanceof SectionDefaultViewHolder) {
+                TextView sectionTextView = ((SectionDefaultViewHolder)holder).title;
                 String customTitle = titleForSection(sectionPosition);
                 sectionTextView.setText(customTitle != null ? customTitle : mSections.get(position).getTitle());
             }
@@ -240,11 +240,11 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<ViewHolder> 
         }
     }
 
-    public static class SectionViewHolder extends ViewHolder {
+    public static class SectionDefaultViewHolder extends DefaultViewHolder {
 
         public TextView title;
 
-        public SectionViewHolder(View view, int mTextResourceid) {
+        public SectionDefaultViewHolder(View view, int mTextResourceid) {
             super(view);
             title = (TextView) view.findViewById(mTextResourceid);
         }

@@ -6,11 +6,11 @@ import android.view.View;
 /**
  * Created by Stephen Vinouze on 04/11/2015.
  */
-public class ViewHolder extends RecyclerView.ViewHolder {
+public class DefaultViewHolder extends RecyclerView.ViewHolder {
 
     private View mView;
 
-    public ViewHolder(View itemView) {
+    public DefaultViewHolder(View itemView) {
         super(itemView);
         mView = itemView;
     }
