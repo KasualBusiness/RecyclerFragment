@@ -34,12 +34,12 @@ public abstract class RecyclerFragment<T> extends Fragment {
     }
 
     /**
-     * The primary method to configure your fragment by indicating your inflated RefrRefreshableRecyclerView and your RecyclerAdapter<T>
-     * You may provide as well a RecyclerSectionAdapter<T> depending of your section customization needs
+     * The primary method to configure your fragment by indicating your RecyclerView and your RecyclerAdapter
+     * You may provide as well a RecyclerSectionAdapter depending of your section customization needs
      * Note that this method must be called before attempting to display any item on the list. Attempting so will throw a IllegalStateException
      * @param recyclerView The RecyclerView that you are using in your layout
-     * @param adapter Your adapter overriding RecyclerAdapter<T>
-     * @param sectionAdapter Your optional section adapter overriding RecyclerSectionAdapter<T>
+     * @param adapter Your adapter overriding RecyclerAdapter
+     * @param sectionAdapter Your optional section adapter overriding RecyclerSectionAdapter
      */
     public void configureFragment(@NonNull RecyclerView recyclerView,
                                   @NonNull RecyclerAdapter<T> adapter,
