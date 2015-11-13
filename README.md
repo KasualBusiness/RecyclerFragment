@@ -199,6 +199,70 @@ yourAdapter.toggleItemView(position);
 yourAdapter.clearSelectedItemViews();
 ```
 
+### Callbacks
+
+We expose several callbacks that can be used get extra control over your `RecyclerFragment` and/or your `RecyclerAdapter`.
+
+#### ClickCallback
+
+Intercepting simple click callbacks is now the responsability of your `Adapter`. This is understandable since your `Adapter` is responsible of laying out your views. `RecyclerAdapter` comes with a `ClickCallback` that exposes an `onItemClick()` and `onItemLongClick()` methods that are very often needed while using a `RecyclerView`.
+
+```
+yourAdapter.setClickCallback(new ClickCallback() {
+    @Override
+    public void onItemClick(int position) {
+        Sample sample = mSampleAdapter.getItemAt(position);
+        Toast.makeText(getActivity(), "Item clicked : " + sample.getName() + " (" + mSampleAdapter.getSelectedItemViewCount() + " selected)", Toast.LENGTH_SHORT).show();
+    }
+});
+```
+
+You may need to listen to other click interactions inside your item views but you can create your own interface from `YourAdapter` that are holding your item views.
+
+#### GestureCallback
+
+You may want to interact with your item views to provide a better user experience. The `RecyclerFragment` provides you a way to enable move and/or swipe gestures by using :
+
+```
+yourFragment.setGestureCallback(moveDirections, swipeDirections);
+```
+
+The directions can be amongst ItemTouchHelper.UP, ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT for each gestures and can also be combined. If you need for instance only to enable swipe gestures, just set the `moveDirection` flag to 0. This snippet enables only swipe gestures for both LEFT and RIGHT directions :
+
+```
+yourFragment.setGestureCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+```
+
+Finally, you can optionally implement a `GestureCallback` to listen to gesture completions or to even more configure your gesture behaviors :
+
+```
+yourFragment.setGestureCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, new GestureCallback() {
+    @Override
+    public boolean onMove(int fromPosition, int toPosition) {
+        return false;
+    }
+
+    @Override
+    public void onSwiped(int position, int direction) {
+
+    }
+});
+```
+
+#### PaginationCallback
+
+For a better user experience as well as loading purposes, you may decide to paginate your list. We provide a smooth way to let you fetch your next page at the proper moment by computing a smart offset depending of your item count in your list. To enable the pagination just configure your fragment with a `PaginationCallback` and use the `displayItems()`method by passing in the `nextPage` reference :
+
+```
+yourFragment.setPaginationCallback(new PaginationCallback() {
+    @Override
+    public void fetchNextPage(int nextPage) {
+      // Fetch your next items (for instance either by calling a web service or from your database)
+       displayItems(yourNextItems, nextPage);
+    }
+});
+```
+
 ## License
 
 ```
