@@ -6,6 +6,7 @@ This library intends to leverage many of the powerful features that the `Recycle
 ## Previews
 
 ![alt Single Choice](art/single_choice.png)
+![alt Multiple Choice](art/multiple_choice.png)
 ![alt Default Section](art/default_section.png)
 ![alt Custom Section](art/custom_section.png)
 
@@ -31,9 +32,7 @@ Maven:
 
 Eclipse: [recyclerfragment-1.0.0.aar](https://github.com/KasualBusiness/RecyclerFragment/releases/download/1.0.0/recyclerfragment-1.0.0.aar)
 
-## Usage
-
-### Basic usage
+## Basic usage
 
 Create a layout for your fragment that will hold the `RecyclerView`
 
@@ -174,6 +173,8 @@ public class YourRecyclerFragment extends RecyclerFragment<T> {
 }
 ```
 
+## Advanced usage
+
 ### Choice mode
 
 ![alt Single Choice](art/single_choice.png)
@@ -266,6 +267,123 @@ yourFragment.setPaginationCallback(new PaginationCallback() {
     }
 });
 ```
+
+### Sections
+
+#### Default sections
+
+![alt Default Section](art/default_section.png)
+
+Organizing your lists into sections can be critical for complex data. This gives your users clear information about how the list is being sorted. Unfortunately this does come natural when it comes to the implementation part as it would be for all iOS developers familiar with `UITableView`/`UIcollectionView`.
+
+This library lets you easily create your sections and lets you define the way you want to display them. To enable sections for your `RecyclerView`, just implement the abstract `sortSectionMethod()` method by defining the method from your `T` model that is used to sort your data.
+
+Let's assume you defined a simple model as following :
+
+```
+public class YourModel {
+
+    private int rate;
+    private String name;
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+Let's say now that we want to sort our model by rate. You must let `YourFragment` sort the data first (sorting is not the responsability of the `Adapter`) and implement the abstract method that will indicate that we want the `Adapter` to sort over the `getRate()` method. We will now have for the `YourFragment` class :
+
+```
+public class YourRecyclerFragment extends RecyclerFragment<YourModel> {
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View contentView = inflater.inflate(R.layout.recycler_layout, container, false);
+
+        RecyclerView recyclerView = (RecyclerView)contentView.findViewById(R.id.recycler_view);
+        YourAdapter adapter = new YourAdapter(getActivity());
+
+        configureFragment(recyclerView, adapter);
+        
+        List<YourModel> yourItems = new ArrayList<>();
+        
+        // Fill in your array
+        
+        // Sort your items
+        Collections.sort(yourItems, new Comparator<YourModel>() {
+            @Override
+            public int compare(YourModel lhs, YourModel rhs) {
+                return lhs.getRate() - rhs.getRate();
+            }
+        });
+        
+        displayItems(yourItems);
+
+        return contentView;
+    }
+
+    @Override
+    public String sortSectionMethod() {
+        return "getRate";
+    }
+}
+```
+
+The result will be displayed into a pre-defined layout using a simple `TextView` and display the result of the sorted method output.
+
+#### Custom sections
+
+![alt Custom Section](art/custom_section.png)
+
+You may want to get more control over the sections. To do so you will need to create your own `Adapter` that inherits from `RecyclerSectionAdapter`. You can then override either `titleForSection()` method if you only want to customize wich text will be displayed into the default section layout or both `onCreateSectionItemView()` and `onBindSectionItemView()` if you want to use a custom layout.
+
+Note that if you implement all these methods, only `titleForSection()` will be taken into consideration, hence ignoring your custom section views.
+
+The implementation would look like for a custom layout section where `YourSectionItemView` is your custom `ViewGroup` representing your section layout :
+
+```
+public class YourSectionViewAdapter extends RecyclerSectionAdapter<YourModel> {
+
+    public YourSectionViewAdapter(Context context) {
+        super(context);
+    }
+
+    @Override
+    public View onCreateSectionItemView(ViewGroup parent, int viewType) {
+        return new YourSectionItemView(mContext);
+    }
+
+    @Override
+    public void onBindSectionItemView(View v, int sectionPosition) {
+        YourSectionItemView sectionItemView = (YourSectionItemView)v;
+        sectionItemView.bind(getFirstItemInSection(sectionPosition));
+    }
+}
+```
+
+To get the first item inside a section, just call `getFirstItemInSection()` method and pass in the section position.
+
+## Wrapping up
+
+Using sections does not prevent you from using gestures. Please note that we purposefully disabled any swipe/move gestures for section items.
+
+Also note that the move gesture is limited inside a section. You cannot move an item from one section to another section. Trying so will automatically stop the move gesture and let the moved item to the last known position.
+
+Finally you should be aware that pagination callbacks won't be triggered either if you use a sectioned `RecyclerView` or if you define a `LayoutManager` other than a `LinearLayoutManager`. This is not supported by the library.
 
 ## License
 
