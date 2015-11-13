@@ -7,9 +7,9 @@ With this library you will be able to :
 
 * Easily display items in a optimized way into your `RecyclerView`
 * Easily display sections and let you customize their views
-* Define a `ChoiceMode`that is either `SingleChoice` or `MultipleChoice`
+* Define a `ChoiceMode`that is either `SINGLE_CHOICE` or `MULTIPLE_CHOICE`
 * Catch simple click and long click events
-* Move and/or swipe to delete items
+* Move and/or swipe to delete items from any directions you want
 * Paginate your content
 
 ## Previews
@@ -186,25 +186,31 @@ public class YourRecyclerFragment extends RecyclerFragment<T> {
 
 ## Advanced usage
 
+### LayoutManager and ItemAnimator
+
+By default the `RecyclerView` is configured with a `VERTICAL` `LinearLayoutManager` and a `DefaultItemAnimator`.
+
+The `RecyclerFragment` exposes `setLayoutManager()` and `setItemAnimator()` methods so you can easily configure either a different `LayoutManager` or `ItemAnimator` that suits you.
+
 ### Choice mode
 
 ![alt Single Choice](art/single_choice.png)
 ![alt Multiple Choice](art/multiple_choice.png)
 
-The choice mode pattern is well-known for all developers that previously used the `ListView`. This pattern has not been implemented for `RecyclerView` as its logic differs from the original `ListView`. This library provides a way to configure your `Adapter` with a choice mode that can be either SINGLE_CHOICE or MULTIPLE_CHOICE. By default it is set to SINGLE_CHOICE. Simply call : 
+The choice mode pattern is well-known for all developers that previously used the `ListView`. This pattern has not been implemented for `RecyclerView` as its logic differs from the original `ListView`. This library provides a way to configure your `Adapter` with a `ChoiceMode` that can be either SINGLE_CHOICE or MULTIPLE_CHOICE. By default it is set to SINGLE_CHOICE :
 
 ```
 yourAdapter.setChoiceMode(RecyclerAdapter.ChoiceMode.MULTIPLE_CHOICE);
 ```
 
-You can retrieve your selected items with these following methods:
+You can retrieve your selected items with these following methods :
 
 ```
 yourAdapter.isItemViewToggled(position);
 yourAdapter.getSelectedItemViewCount();
 ```
 
-If you need to manually select/deselect several items, use these methods:
+If you need to manually select/deselect several items, use these methods :
 
 ```
 yourAdapter.toggleItemView(position);
