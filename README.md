@@ -5,9 +5,9 @@ This library intends to leverage many of the powerful features that the `Recycle
 
 ## Previews
 
-![alt tag](art/single_choice.png)
-![alt tag](art/default_section.png)
-![alt tag](art/custom_section.png)
+![alt Single Choice](art/single_choice.png)
+![alt Default Section](art/default_section.png)
+![alt Custom Section](art/custom_section.png)
 
 ## Download
 RecyclerFragment requires at minimum Android 2.1 (API 7).
@@ -176,8 +176,8 @@ public class YourRecyclerFragment extends RecyclerFragment<T> {
 
 ### Choice mode
 
-![alt tag](art/single_choice.png)
-![alt tag](art/multiple_choice.png)
+![alt Single Choice](art/single_choice.png)
+![alt Multiple Choice](art/multiple_choice.png)
 
 The choice mode pattern is well-known for all developers that previously used the `ListView`. This pattern has not been implemented for `RecyclerView` as its logic differs from the original `ListView`. This library provides a way to configure your `Adapter` with a choice mode that can be either SINGLE_CHOICE or MULTIPLE_CHOICE. By default it is set to SINGLE_CHOICE. Simply call : 
 
@@ -221,6 +221,8 @@ You may need to listen to other click interactions inside your item views but yo
 
 #### GestureCallback
 
+![alt Gestures](art/gestures.gif)
+
 You may want to interact with your item views to provide a better user experience. The `RecyclerFragment` provides you a way to enable move and/or swipe gestures by using :
 
 ```
@@ -250,6 +252,8 @@ yourFragment.setGestureCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
 ```
 
 #### PaginationCallback
+
+![alt Pagination](art/pagination.gif)
 
 For a better user experience as well as loading purposes, you may decide to paginate your list. We provide a smooth way to let you fetch your next page at the proper moment by computing a smart offset depending of your item count in your list. To enable the pagination just configure your fragment with a `PaginationCallback` and use the `displayItems()`method by passing in the `nextPage` reference :
 
