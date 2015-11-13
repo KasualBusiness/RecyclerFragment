@@ -202,7 +202,7 @@ yourAdapter.clearSelectedItemViews();
 
 ### Callbacks
 
-We expose several callbacks that can be used get extra control over your `RecyclerFragment` and/or your `RecyclerAdapter`.
+We expose several callbacks that can be used to get extra control over your `RecyclerFragment` and/or your `RecyclerAdapter`.
 
 #### ClickCallback
 
