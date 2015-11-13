@@ -29,7 +29,7 @@ Eclipse: [recyclerfragment-1.0.0.aar](https://github.com/KasualBusiness/Recycler
 
 ### Basic usage
 
-Create a layout for your fragment that will hold the `RecyclerView` and inflate this layout inside your newly created `Fragment`.
+Create a layout for your fragment that will hold the `RecyclerView`
 
 recycler_layout.xml:
 
@@ -67,13 +67,13 @@ public class YourRecyclerFragment extends RecyclerFragment<T> {
 }
 ```
 
-Now create your `View` that will be displayed inside the `RecyclerView`. We provide a `DefaultCardView` class that serves as a basic implementation of the `CardView` pre-configured and let you freely configure your layout without having to redefine the `CardView` as root. Using this is not mandatory and you can use any `ViewGroup` that fits your needs :
+Now create your `View` that will be handled by your `Adapter`. We provide a `DefaultCardView` class that serves as a pre-configured `CardView` and let you freely configure your layout without having to redefine the `CardView` as root. Using this is not mandatory and you can use any `ViewGroup` that fits your needs :
 
 your_item_view.xml :
 
 ```
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"> // In this case refer to DefaultCardView
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -166,6 +166,28 @@ public class YourRecyclerFragment extends RecyclerFragment<T> {
         return null;
     }
 }
+```
+
+### Choice mode
+
+The choice mode pattern is well-known for all developers that previously used the `ListView`. This pattern has not been implemented for `RecyclerView` as its logic differs from the original `ListView`. This library provides a way to configure your `Adapter` with a choice mode that can be either SINGLE_CHOICE or MULTIPLE_CHOICE. By default it is set to SINGLE_CHOICE. Simply call : 
+
+```
+yourAdapter.setChoiceMode(RecyclerAdapter.ChoiceMode.MULTIPLE_CHOICE);
+```
+
+You can retrieve your selected items with these following methods:
+
+```
+yourAdapter.isItemViewToggled(position);
+yourAdapter.getSelectedItemViewCount();
+```
+
+If you need to manually select/deselect several items, use these methods:
+
+```
+yourAdapter.toggleItemView(position);
+yourAdapter.clearSelectedItemViews();
 ```
 
 ## License
