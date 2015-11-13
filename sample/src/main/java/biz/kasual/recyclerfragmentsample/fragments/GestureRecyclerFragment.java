@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import biz.kasual.recyclerfragment.callbacks.GestureCallback;
 import biz.kasual.recyclerfragmentsample.adapters.SampleAdapter;
 import biz.kasual.recyclerfragmentsample.adapters.SampleSectionViewAdapter;
 import biz.kasual.recyclerfragmentsample.models.Sample;
@@ -26,7 +27,17 @@ public class GestureRecyclerFragment extends AbstractRecyclerFragment {
         View contentView = super.onCreateView(inflater, container, savedInstanceState);
 
         configureFragment(mRecyclerView, mSampleAdapter, new SampleSectionViewAdapter(getActivity()));
-        setGestureCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        setGestureCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, new GestureCallback() {
+            @Override
+            public boolean onMove(int fromPosition, int toPosition) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(int position, int direction) {
+
+            }
+        });
 
         List<Sample> samples = SampleAdapter.buildSamples();
 
