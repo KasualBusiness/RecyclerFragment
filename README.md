@@ -3,6 +3,12 @@ The recently introduced `RecyclerView` has changed the way of handling list of e
 
 This library intends to leverage many of the powerful features that the `RecyclerView` provides by wrapping the `RecyclerView` into a `Fragment` with some predefined `Adapter` classes.
 
+## Previews
+
+![alt tag](art/single_choice.png)
+![alt tag](art/default_section.png)
+![alt tag](art/custom_section.png)
+
 ## Download
 RecyclerFragment requires at minimum Android 2.1 (API 7).
 
@@ -169,6 +175,9 @@ public class YourRecyclerFragment extends RecyclerFragment<T> {
 ```
 
 ### Choice mode
+
+![alt tag](art/single_choice.png)
+![alt tag](art/multiple_choice.png)
 
 The choice mode pattern is well-known for all developers that previously used the `ListView`. This pattern has not been implemented for `RecyclerView` as its logic differs from the original `ListView`. This library provides a way to configure your `Adapter` with a choice mode that can be either SINGLE_CHOICE or MULTIPLE_CHOICE. By default it is set to SINGLE_CHOICE. Simply call : 
 
