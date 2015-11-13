@@ -22,7 +22,7 @@ With this library you will be able to :
 ![alt Custom Section](art/custom_section.png)
 
 ## Download
-RecyclerFragment requires at minimum Android 2.1 (API 7).
+`RecyclerFragment` requires at minimum Android 2.1 (API 7).
 
 Gradle:
 
@@ -89,7 +89,7 @@ your_item_view.xml :
 
 ```
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"> // In this case refer to DefaultCardView
+<merge xmlns:android="http://schemas.android.com/apk/res/android"> // In this case refers to DefaultCardView
 
     <RelativeLayout
         android:layout_width="match_parent"
