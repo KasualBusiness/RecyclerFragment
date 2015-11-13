@@ -3,8 +3,19 @@ The recently introduced `RecyclerView` has changed the way of handling list of e
 
 This library intends to leverage many of the powerful features that the `RecyclerView` provides by wrapping the `RecyclerView` into a `Fragment` with some predefined `Adapter` classes.
 
+With this library you will be able to :
+
+* Easily display items in a optimized way into your `RecyclerView`
+* Easily display sections and let you customize their views
+* Define a `ChoiceMode`that is either `SingleChoice` or `MultipleChoice`
+* Catch simple click and long click events
+* Move and/or swipe to delete items
+* Paginate your content
+
 ## Previews
 
+![alt Gestures](art/gestures.gif)
+![alt Pagination](art/pagination.gif)
 ![alt Single Choice](art/single_choice.png)
 ![alt Multiple Choice](art/multiple_choice.png)
 ![alt Default Section](art/default_section.png)
