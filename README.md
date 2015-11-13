@@ -27,7 +27,146 @@ Eclipse: [recyclerfragment-1.0.0.aar](https://github.com/KasualBusiness/Recycler
 
 ## Usage
 
+### Basic usage
 
+Create a layout for your fragment that will hold the `RecyclerView` and inflate this layout inside your newly created `Fragment`.
+
+recycler_layout.xml:
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+
+</FrameLayout>
+```
+
+Then create a `Fragment` that inherits from `RecyclerFragment<T>` where `T` is your model that will be used to data bind your views. You don't need to worry about implementing the `sortSectionMethod()` method for now as we will see this while displaying items inside sections.
+
+```
+public class YourRecyclerFragment extends RecyclerFragment<T> {
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View contentView = inflater.inflate(R.layout.recycler_layout, container, false);
+        return contentView;
+    }
+
+    @Override
+    public String sortSectionMethod() {
+        return null;
+    }
+}
+```
+
+Now create your `View` that will be displayed inside the `RecyclerView`. We provide a `DefaultCardView` class that serves as a basic implementation of the `CardView` pre-configured and let you freely configure your layout without having to redefine the `CardView` as root. Using this is not mandatory and you can use any `ViewGroup` that fits your needs :
+
+your_item_view.xml :
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        // Your inner views
+
+    </RelativeLayout>
+
+</merge>
+```
+
+```
+public class YourItemView extends DefaultCardView {
+
+    public YourItemView(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        initViews(context);
+    }
+
+    public YourItemView(Context context) {
+        super(context);
+        initViews(context);
+    }
+
+    public void bind(T yourModel) {
+        // Update your layout given the T model
+    }
+
+    private void initViews(Context context) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.sample_item_view, this);
+        
+        // Retrieve your inner views references
+    }
+}
+```
+
+After designing your item views you can create your `Adapter` that inherits from `RecyclerAdapter<T>` and implement the abstract methods that will be used to create/bind those item views inside your `RecyclerView`.
+
+```
+public class YourAdapter extends RecyclerAdapter<T> {
+
+    public YourAdapter(Context context) {
+        super(context);
+    }
+
+    @Override
+    protected View onCreateItemView(ViewGroup parent, int viewType) {
+        return new YourItemView(mContext);
+    }
+
+    @Override
+    protected void onBindItemView(View v, int position) {
+        YourItemView sampleItemView = (YourItemView)v;
+        YourItemView.bind(getItemAt(position));
+    }
+
+}
+```
+
+You don't need to worry about the `ViewHolder` pattern, it is already taken care of inside the library so you just need to focus on your layouts without any performance loss.
+
+Finally, in `YourRecyclerFragment`, call the `configureFragment`method with your `RecyclerView` reference from your layout and your `Adapter`. You will then be able to display your items. Your `Fragment` should look like :
+
+```
+public class YourRecyclerFragment extends RecyclerFragment<T> {
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View contentView = inflater.inflate(R.layout.recycler_layout, container, false);
+
+        RecyclerView recyclerView = (RecyclerView)contentView.findViewById(R.id.recycler_view);
+        YourAdapter adapter = new YourAdapter(getActivity());
+
+        configureFragment(recyclerView, adapter);
+        
+        List<T> yourItems = new ArrayList<>();
+        
+        // Fill in your array
+        
+        displayItems(yourItems);
+
+        return contentView;
+    }
+
+    @Override
+    public String sortSectionMethod() {
+        return null;
+    }
+}
+```
 
 ## License
 
