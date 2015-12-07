@@ -3,14 +3,26 @@ The recently introduced `RecyclerView` has changed the way of handling list of e
 
 This library intends to leverage many of the powerful features that the `RecyclerView` provides by wrapping the `RecyclerView` into a `Fragment` with some predefined `Adapter` classes.
 
+With this library you will be able to :
+
+* Easily display items in a optimized way into your `RecyclerView`
+* Easily display sections and let you customize their views
+* Define a `ChoiceMode`that is either `SINGLE_CHOICE` or `MULTIPLE_CHOICE`
+* Catch simple click and long click events
+* Move and/or swipe to delete items from any directions you want
+* Paginate your content
+
 ## Previews
 
-![alt tag](art/single_choice.png)
-![alt tag](art/default_section.png)
-![alt tag](art/custom_section.png)
+![alt Gestures](art/gestures.gif)
+![alt Pagination](art/pagination.gif)
+![alt Single Choice](art/single_choice.png)
+![alt Multiple Choice](art/multiple_choice.png)
+![alt Default Section](art/default_section.png)
+![alt Custom Section](art/custom_section.png)
 
 ## Download
-RecyclerFragment requires at minimum Android 2.1 (API 7).
+`RecyclerFragment` requires at minimum Android 2.1 (API 7).
 
 Gradle:
 
@@ -31,9 +43,7 @@ Maven:
 
 Eclipse: [recyclerfragment-1.0.0.aar](https://github.com/KasualBusiness/RecyclerFragment/releases/download/1.0.0/recyclerfragment-1.0.0.aar)
 
-## Usage
-
-### Basic usage
+## Basic usage
 
 Create a layout for your fragment that will hold the `RecyclerView`
 
@@ -79,7 +89,7 @@ your_item_view.xml :
 
 ```
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"> // In this case refer to DefaultCardView
+<merge xmlns:android="http://schemas.android.com/apk/res/android"> // In this case refers to DefaultCardView
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -174,25 +184,33 @@ public class YourRecyclerFragment extends RecyclerFragment<T> {
 }
 ```
 
+## Advanced usage
+
+### LayoutManager and ItemAnimator
+
+By default the `RecyclerView` is configured with a `VERTICAL` `LinearLayoutManager` and a `DefaultItemAnimator`.
+
+The `RecyclerFragment` exposes `setLayoutManager()` and `setItemAnimator()` methods so you can easily configure either a different `LayoutManager` or `ItemAnimator` that suits you.
+
 ### Choice mode
 
-![alt tag](art/single_choice.png)
-![alt tag](art/multiple_choice.png)
+![alt Single Choice](art/single_choice.png)
+![alt Multiple Choice](art/multiple_choice.png)
 
-The choice mode pattern is well-known for all developers that previously used the `ListView`. This pattern has not been implemented for `RecyclerView` as its logic differs from the original `ListView`. This library provides a way to configure your `Adapter` with a choice mode that can be either SINGLE_CHOICE or MULTIPLE_CHOICE. By default it is set to SINGLE_CHOICE. Simply call : 
+The choice mode pattern is well-known for all developers that previously used the `ListView`. This pattern has not been implemented for `RecyclerView` as its logic differs from the original `ListView`. This library provides a way to configure your `Adapter` with a `ChoiceMode` that can be either SINGLE_CHOICE or MULTIPLE_CHOICE. By default it is set to SINGLE_CHOICE :
 
 ```
 yourAdapter.setChoiceMode(RecyclerAdapter.ChoiceMode.MULTIPLE_CHOICE);
 ```
 
-You can retrieve your selected items with these following methods:
+You can retrieve your selected items with these following methods :
 
 ```
 yourAdapter.isItemViewToggled(position);
 yourAdapter.getSelectedItemViewCount();
 ```
 
-If you need to manually select/deselect several items, use these methods:
+If you need to manually select/deselect several items, use these methods :
 
 ```
 yourAdapter.toggleItemView(position);
@@ -201,7 +219,7 @@ yourAdapter.clearSelectedItemViews();
 
 ### Callbacks
 
-We expose several callbacks that can be used get extra control over your `RecyclerFragment` and/or your `RecyclerAdapter`.
+We expose several callbacks that can be used to get extra control over your `RecyclerFragment` and/or your `RecyclerAdapter`.
 
 #### ClickCallback
 
@@ -220,6 +238,8 @@ yourAdapter.setClickCallback(new ClickCallback() {
 You may need to listen to other click interactions inside your item views but you can create your own interface from `YourAdapter` that are holding your item views.
 
 #### GestureCallback
+
+![alt Gestures](art/gestures.gif)
 
 You may want to interact with your item views to provide a better user experience. The `RecyclerFragment` provides you a way to enable move and/or swipe gestures by using :
 
@@ -251,6 +271,8 @@ yourFragment.setGestureCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
 
 #### PaginationCallback
 
+![alt Pagination](art/pagination.gif)
+
 For a better user experience as well as loading purposes, you may decide to paginate your list. We provide a smooth way to let you fetch your next page at the proper moment by computing a smart offset depending of your item count in your list. To enable the pagination just configure your fragment with a `PaginationCallback` and use the `displayItems()`method by passing in the `nextPage` reference :
 
 ```
@@ -262,6 +284,123 @@ yourFragment.setPaginationCallback(new PaginationCallback() {
     }
 });
 ```
+
+### Sections
+
+#### Default sections
+
+![alt Default Section](art/default_section.png)
+
+Organizing your lists into sections can be critical for complex data. This gives your users clear information about how the list is being sorted. Unfortunately this does come natural when it comes to the implementation part as it would be for all iOS developers familiar with `UITableView`/`UIcollectionView`.
+
+This library lets you easily create your sections and lets you define the way you want to display them. To enable sections for your `RecyclerView`, just implement the abstract `sortSectionMethod()` method by defining the method from your `T` model that is used to sort your data.
+
+Let's assume you defined a simple model as following :
+
+```
+public class YourModel {
+
+    private int rate;
+    private String name;
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+Let's say now that we want to sort our model by rate. You must let `YourFragment` sort the data first (sorting is not the responsability of the `Adapter`) and implement the abstract method that will indicate that we want the `Adapter` to sort over the `getRate()` method. We will now have for the `YourFragment` class :
+
+```
+public class YourRecyclerFragment extends RecyclerFragment<YourModel> {
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View contentView = inflater.inflate(R.layout.recycler_layout, container, false);
+
+        RecyclerView recyclerView = (RecyclerView)contentView.findViewById(R.id.recycler_view);
+        YourAdapter adapter = new YourAdapter(getActivity());
+
+        configureFragment(recyclerView, adapter);
+        
+        List<YourModel> yourItems = new ArrayList<>();
+        
+        // Fill in your array
+        
+        // Sort your items
+        Collections.sort(yourItems, new Comparator<YourModel>() {
+            @Override
+            public int compare(YourModel lhs, YourModel rhs) {
+                return lhs.getRate() - rhs.getRate();
+            }
+        });
+        
+        displayItems(yourItems);
+
+        return contentView;
+    }
+
+    @Override
+    public String sortSectionMethod() {
+        return "getRate";
+    }
+}
+```
+
+The result will be displayed into a pre-defined layout using a simple `TextView` and display the result of the sorted method output.
+
+#### Custom sections
+
+![alt Custom Section](art/custom_section.png)
+
+You may want to get more control over the sections. To do so you will need to create your own `Adapter` that inherits from `RecyclerSectionAdapter`. You can then override either `titleForSection()` method if you only want to customize wich text will be displayed into the default section layout or both `onCreateSectionItemView()` and `onBindSectionItemView()` if you want to use a custom layout.
+
+Note that if you implement all these methods, only `titleForSection()` will be taken into consideration, hence ignoring your custom section views.
+
+The implementation would look like for a custom layout section where `YourSectionItemView` is your custom `ViewGroup` representing your section layout :
+
+```
+public class YourSectionViewAdapter extends RecyclerSectionAdapter<YourModel> {
+
+    public YourSectionViewAdapter(Context context) {
+        super(context);
+    }
+
+    @Override
+    public View onCreateSectionItemView(ViewGroup parent, int viewType) {
+        return new YourSectionItemView(mContext);
+    }
+
+    @Override
+    public void onBindSectionItemView(View v, int sectionPosition) {
+        YourSectionItemView sectionItemView = (YourSectionItemView)v;
+        sectionItemView.bind(getFirstItemInSection(sectionPosition));
+    }
+}
+```
+
+To get the first item inside a section, just call `getFirstItemInSection()` method and pass in the section position.
+
+## Wrapping up
+
+Using sections does not prevent you from using gestures. Please note that we purposefully disabled any swipe/move gestures for section items.
+
+Also note that the move gesture is limited inside a section. You cannot move an item from one section to another section. Trying so will automatically stop the move gesture and let the moved item to the last known position.
+
+Finally you should be aware that pagination callbacks won't be triggered either if you use a sectioned `RecyclerView` or if you define a `LayoutManager` other than a `LinearLayoutManager`. This is not supported by the library.
 
 ## License
 
