@@ -151,12 +151,10 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<DefaultVie
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!(mChoiceMode == ChoiceMode.SINGLE_CHOICE && isItemViewToggled(position))) {
-                    toggleItemView(position);
+                toggleItemView(position);
 
-                    if (mCallback != null) {
-                        mCallback.onItemClick(position);
-                    }
+                if (mCallback != null) {
+                    mCallback.onItemClick(position);
                 }
             }
         });

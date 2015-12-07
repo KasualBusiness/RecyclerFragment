@@ -30,12 +30,7 @@ public class SectionRecyclerFragment extends AbstractRecyclerFragment {
         Collections.sort(samples, new Comparator<Sample>() {
             @Override
             public int compare(Sample lhs, Sample rhs) {
-                try {
-                    return lhs.getRate() - rhs.getRate();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return 0;
+                return lhs.getRate() - rhs.getRate();
             }
         });
 
