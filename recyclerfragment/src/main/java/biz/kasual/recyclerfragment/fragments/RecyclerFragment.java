@@ -20,7 +20,6 @@ import biz.kasual.recyclerfragment.callbacks.GestureCallback;
  */
 public abstract class RecyclerFragment<T> extends Fragment {
 
-    private boolean mHasNextPage;
     private boolean mIsLoading;
     private int mCurrentPage = 1;
     private RecyclerView mRecyclerView;
@@ -119,7 +118,7 @@ public abstract class RecyclerFragment<T> extends Fragment {
                         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                             super.onScrolled(recyclerView, dx, dy);
 
-                            if (!mIsLoading && mHasNextPage && (((LinearLayoutManager) layoutManager).findLastVisibleItemPosition()) > getPaginationTrigger(layoutManager.getItemCount())) {
+                            if (!mIsLoading && (((LinearLayoutManager) layoutManager).findLastVisibleItemPosition()) > getPaginationTrigger(layoutManager.getItemCount())) {
                                 mIsLoading = true;
                                 callback.fetchNextPage(++mCurrentPage);
                             }
@@ -226,20 +225,15 @@ public abstract class RecyclerFragment<T> extends Fragment {
     public void displayItems(@Nullable List<T> items, int page) {
         if (mAdapter != null) {
 
-            mCurrentPage = page;
-
             if (items != null) {
+                mCurrentPage = page;
+
                 if (page == 1) {
                     mAdapter.setItems(items);
                 }
                 else {
                     mAdapter.addItems(items, mAdapter.getItemCount());
                 }
-
-                mHasNextPage = (items.size() > 0);
-            }
-            else {
-                mHasNextPage = false;
             }
 
             mIsLoading = false;
