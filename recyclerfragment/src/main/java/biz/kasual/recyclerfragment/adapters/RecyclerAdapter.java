@@ -70,7 +70,7 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<DefaultVie
         notifyItemMoved(from, to);
     }
 
-    private void remoteItems(List<T> items, int position) {
+    public void remoteItems(List<T> items, int position) {
         List<Integer> selectedPositions = new ArrayList<>();
         for (T item : items) {
             selectedPositions.add(mItems.indexOf(item));
