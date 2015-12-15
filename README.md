@@ -27,7 +27,7 @@ With this library you will be able to :
 Gradle:
 
 ``
-compile 'biz.kasual:recyclerfragment:1.0.2'
+compile 'biz.kasual:recyclerfragment:1.0.3'
 ``
 
 Maven:
@@ -36,12 +36,12 @@ Maven:
 <dependency>
   <groupId>biz.kasual</groupId>
   <artifactId>recyclerfragment</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <type>aar</type>
 </dependency>
 ```
 
-Eclipse: [recyclerfragment-1.0.2.aar](https://github.com/KasualBusiness/RecyclerFragment/releases/download/1.0.2/recyclerfragment-1.0.2.aar)
+Eclipse: [recyclerfragment-1.0.3.aar](https://github.com/KasualBusiness/RecyclerFragment/releases/download/1.0.3/recyclerfragment-1.0.3.aar)
 
 ## Basic usage
 
