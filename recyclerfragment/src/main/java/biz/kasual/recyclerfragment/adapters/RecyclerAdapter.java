@@ -64,18 +64,29 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<DefaultVie
     }
 
     public void moveItem(int from, int to) {
+        moveSelectedItemView(from, to);
+
         Collections.swap(mItems, from, to);
         notifyItemMoved(from, to);
     }
 
+    private void remoteItems(List<T> items, int position) {
+        List<Integer> selectedPositions = new ArrayList<>();
+        for (T item : items) {
+            selectedPositions.add(mItems.indexOf(item));
+        }
+
+        removeSelectedItemViews(selectedPositions);
+
+        mItems.removeAll(items);
+        notifyItemRangeRemoved(position, items.size());
+    }
+
     public void removeItem(int position) {
+        removeSelectedItemView(position);
+
         mItems.remove(position);
         notifyItemRemoved(position);
-        try {
-            notifyItemRangeChanged(position, getItemCount());
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-        }
     }
 
     public void clearItems() {
@@ -124,6 +135,37 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<DefaultVie
                 break;
         }
         notifyItemChanged(position);
+    }
+
+    public void moveSelectedItemView(int from, int to) {
+        if (isItemViewToggled(from) && !isItemViewToggled(to)) {
+            selectedItemViews.delete(from);
+            selectedItemViews.put(to, true);
+        }
+        else if (!isItemViewToggled(from) && isItemViewToggled(to)) {
+            selectedItemViews.delete(to);
+            selectedItemViews.put(from, true);
+        }
+    }
+
+    public void removeSelectedItemViews(List<Integer> positions) {
+        List<Integer> selectedPositions = getSelectedItemViews();
+        selectedPositions.removeAll(positions);
+
+        selectedItemViews.clear();
+        for (Integer selectedPosition : selectedPositions) {
+            selectedItemViews.put(selectedPosition - 1, true);
+        }
+    }
+
+    public void removeSelectedItemView(int position) {
+        List<Integer> selectedPositions = getSelectedItemViews();
+        selectedPositions.remove(selectedPositions.indexOf(position));
+
+        selectedItemViews.clear();
+        for (Integer selectedPosition : selectedPositions) {
+            selectedItemViews.put(position > selectedPosition ? selectedPosition : selectedPosition - 1, true);
+        }
     }
 
     public void clearSelectedItemViews() {
