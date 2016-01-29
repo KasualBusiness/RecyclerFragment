@@ -171,7 +171,7 @@ public class RecyclerSectionAdapter<T> extends RecyclerView.Adapter<DefaultViewH
     private void buildSections(List<T> items) {
         if (items.size() > 0) {
             try {
-                final Method method = items.get(0).getClass().getDeclaredMethod(mSortMethodName);
+                final Method method = items.get(0).getClass().getMethod(mSortMethodName);
                 if (method != null) {
 
                     List<Section> sections = new ArrayList<>();
