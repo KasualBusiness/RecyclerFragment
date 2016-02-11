@@ -19,6 +19,7 @@ With this library you will be able to :
 ![alt Single Choice](art/single_choice.png)
 ![alt Multiple Choice](art/multiple_choice.png)
 ![alt Default Section](art/default_section.png)
+![alt Custom Section](art/grid_section.png)
 ![alt Custom Section](art/custom_section.png)
 
 ## Download

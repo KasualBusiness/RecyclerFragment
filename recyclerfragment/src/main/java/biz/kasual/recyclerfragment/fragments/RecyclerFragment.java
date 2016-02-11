@@ -76,14 +76,14 @@ public abstract class RecyclerFragment<T> extends Fragment {
      * @param layoutManager The layout manager you want to attach to your recycler view.
      * @throws IllegalStateException if you call this method before configuring your fragment
      */
-    public void setLayoutManager(@NonNull RecyclerView.LayoutManager layoutManager) {
+    public void setLayoutManager(@NonNull final RecyclerView.LayoutManager layoutManager) {
         if (mRecyclerView != null) {
             if(mSectionAdapter != null && layoutManager instanceof GridLayoutManager) {
                 ((GridLayoutManager)layoutManager).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int position) {
                         if(mSectionAdapter.isSectionAt(position)) {
-                            return 3;
+                            return ((GridLayoutManager)layoutManager).getSpanCount();
                         }
                         return 1;
                     }
