@@ -26,8 +26,9 @@ public class SectionRecyclerFragment extends AbstractRecyclerFragment {
 
         configureFragment(mRecyclerView, mSampleAdapter);
 
-        GridLayoutManager manager = new GridLayoutManager(getActivity(), 5);
-        setLayoutManager(manager);
+        // Set grid layout manager to display data as grid
+        /*GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
+        setLayoutManager(manager);*/
 
         List<Sample> samples = SampleAdapter.buildSamples();
 
