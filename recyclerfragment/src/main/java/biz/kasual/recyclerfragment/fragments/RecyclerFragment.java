@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -77,6 +78,17 @@ public abstract class RecyclerFragment<T> extends Fragment {
      */
     public void setLayoutManager(@NonNull RecyclerView.LayoutManager layoutManager) {
         if (mRecyclerView != null) {
+            if(mSectionAdapter != null && layoutManager instanceof GridLayoutManager) {
+                ((GridLayoutManager)layoutManager).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        if(mSectionAdapter.isSectionAt(position)) {
+                            return 3;
+                        }
+                        return 1;
+                    }
+                });
+            }
             mRecyclerView.setLayoutManager(layoutManager);
         }
         else {

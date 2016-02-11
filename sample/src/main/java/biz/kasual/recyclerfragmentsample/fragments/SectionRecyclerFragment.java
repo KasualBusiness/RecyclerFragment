@@ -2,6 +2,7 @@ package biz.kasual.recyclerfragmentsample.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,9 @@ public class SectionRecyclerFragment extends AbstractRecyclerFragment {
         View contentView = super.onCreateView(inflater, container, savedInstanceState);
 
         configureFragment(mRecyclerView, mSampleAdapter);
+
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
+        setLayoutManager(manager);
 
         List<Sample> samples = SampleAdapter.buildSamples();
 
