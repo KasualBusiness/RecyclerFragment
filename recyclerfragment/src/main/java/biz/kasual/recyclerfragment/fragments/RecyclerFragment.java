@@ -63,6 +63,7 @@ public abstract class RecyclerFragment<T> extends Fragment {
             recyclerView.setAdapter(sectionAdapter);
         }
         else {
+            mSectionAdapter = null;
             recyclerView.setAdapter(adapter);
         }
 
