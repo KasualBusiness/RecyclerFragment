@@ -236,6 +236,17 @@ public abstract class RecyclerFragment<T> extends Fragment {
      * @throws IllegalStateException if you call this method before configuring your fragment
      */
     public void displayItems(@Nullable List<T> items, int page) {
+        displayItems(items, page, mAdapter.getItemCount());
+    }
+
+    /**
+     * Display your items inside your configured adapter and let it fill it depending on the pagination configuration
+     * @param items The items to be displayed in your list
+     * @param page The page to display
+     * @param position The position to add new items in the existing list
+     * @throws IllegalStateException if you call this method before configuring your fragment
+     */
+    public void displayItems(@Nullable List<T> items, int page, int position) {
         if (mAdapter != null) {
 
             if (items != null) {
@@ -245,7 +256,7 @@ public abstract class RecyclerFragment<T> extends Fragment {
                     mAdapter.setItems(items);
                 }
                 else {
-                    mAdapter.addItems(items, mAdapter.getItemCount());
+                    mAdapter.addItems(items, position);
                 }
             }
 
